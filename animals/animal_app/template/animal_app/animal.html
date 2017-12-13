@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load template_tags %}
+
+  {% block add-part-form %}
+    <form id="add-part-form" action="" method="POST" class="form-inline">
+      {% csrf_token %}
+
+      {% for field in newPartForm %}
+        <div class="form-group">
+          {{field.error}}
+          {{field.label_tag}}
+          {{field|add_attributes:"form-control"}}
+        </div>
+      {%endfor%}
+
+      <input class="btn btn-primary" type="submit" value="Go" />
+    </form>
+  {% endblock %}

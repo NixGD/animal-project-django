@@ -1,0 +1,53 @@
+{% load template_tags %}
+{% load static %}
+
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/figuration/2.0.0/css/figuration.min.css" integrity="sha384-4NEYqGqlkFmjCXappSYTanA6sCbHfuAbTw0y9/n3iEx6JVK5TzYEVyQWroUSR3vo" crossorigin="anonymous">
+
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/figuration/2.0.0/js/figuration.min.js" integrity="sha384-CYqCLcTJYBDbNhvb4Y5FSqooQB6ZZZUBboJ2YkdFnNrf5BLWOy1WsKdaiSpOAZf/" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'animal_app/style.css' %}" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-md-3" id="sidebar">
+        <a id="user-link" href="{% url 'user' %}">Return to user page</a>
+        <div id="student-list">
+          Quick Links
+          <ul>
+            {% for animal in user.animal_set.all %}
+              <li>
+                <a class="btn btn-default btn-sm" href="{% url 'animal' animal.pk %}">{{animal}}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <!-- Main content  -->
+      <div class="col-md-9" id="content">
+          <!-- Header -->
+        <div class="row row-flex flex-md-center" id="title">
+            {{animal.student}} - {{animal.animal}}
+        </div>
+        <!-- Part table -->
+        <div class="row row-flex flex-md-center">
+          <div class="col-md-auto">
+              {% include "animal_app/part_table.html" %}
+          </div>
+        </div>
+        <!-- add part forms -->
+        <div class="row row-flex flex-md-center">
+          <div class="col-md-auto">
+            {% block add-part-form %} {%endblock%}
+          </div>
+        </div>
+        {% if edit_part %}
+            {% include "animal_app/edit_part.html" %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</body>

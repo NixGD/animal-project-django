@@ -1,0 +1,66 @@
+{% load template_tags %}
+
+    <div class="modal" id="edit-part-modal" data-on-close="{% url 'animal' animal.pk %}">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title">
+              Edit Shape
+            </h2>
+          </div>
+          <form action="" method="POST">
+            <div class="modal-body">
+              <div class="container">
+                {% csrf_token %}
+                <div class="row form-group">
+                  <div class="col-md-2">
+                    {{partform.name.errors}}
+                    <label>
+                      {{partform.name.label_tag}}
+                    </label>
+                  </div>
+                  <div class="col-md-10">
+                    {{partform.name|add_attributes:"form-control"}}
+                  </div>
+                </div>
+                <div>
+                  {{formset.management_form}}
+                  {% for mform in formset %}
+                    <div class="row form-group">
+                      <div class="col-md-2">
+                        <label>
+                          {{mform.instance.dimension.name|title}}:
+                        </label>
+                      </div>
+                      <div class="col-md-10">
+                        {% for field in mform %}
+                          {{ field|add_attributes:"form-control"}}
+                        {% endfor %}
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="modal-footer">
+                <input type="submit" value="Submit" class="btn btn-primary"/>
+              </div>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div>
+      <button type="button" id="edit-part-modal-button" data-cfw="modal" data-cfw-modal-toggle="#edit-part-modal">
+          Modal button
+      </button>
+    </div>
+    <script>
+      $(document).ready(function() {
+        $('#edit-part-modal-button').CFW_Modal('show');
+
+        $('#edit-part-modal').on('afterHide.cfw.modal', function(){
+          window.location = $('#edit-part-modal').data('on-close');
+        });
+
+      })
+    </script>

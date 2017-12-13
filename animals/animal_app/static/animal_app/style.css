@@ -1,0 +1,31 @@
+
+#animal-summary-table {
+  border-collapse: collapse;
+  margin: 1.5em
+}
+
+#animal-summary-table td{
+  border: 0.05em black solid;
+  padding: 0.4em;
+}
+
+#animal-summary-table .editing{
+  font-weight: bold;
+}
+
+#add-part-form {
+  margin: 1.5em;
+}
+
+#title {
+  font-size: 3.5em;
+  margin: 0.5em;
+}
+
+#sidebar {
+  padding: 2em;
+}
+
+#student-list {
+  margin-top: 2em;
+}
