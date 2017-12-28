@@ -1,75 +1,67 @@
+{% extends "base.html" %}
+
 {% load template_tags %}
-{% load static %}
 
-<head>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/figuration/2.0.0/css/figuration.min.css" integrity="sha384-4NEYqGqlkFmjCXappSYTanA6sCbHfuAbTw0y9/n3iEx6JVK5TzYEVyQWroUSR3vo" crossorigin="anonymous">
+{% block title %}
+    Welcome {{user}}!
+{% endblock %}
 
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/figuration/2.0.0/js/figuration.min.js" integrity="sha384-CYqCLcTJYBDbNhvb4Y5FSqooQB6ZZZUBboJ2YkdFnNrf5BLWOy1WsKdaiSpOAZf/" crossorigin="anonymous"></script>
-  <link rel="stylesheet" type="text/css" href="{% static 'animal_app/style.css' %}" />
-</head>
+{% block content %}
+<div class="row row-flex flex-md-center">
+  <div class="col-md-auto">
+    <h2>
+      Your animals:
+    </h2>
+    <table class="table">
+      <head>
+        <tr>
+          <th>
+            Student Name
+          </th>
+          <th>
+            Animal
+          </th>
+          <th>  </th>
+          <th>  </th>
+        </tr>
+      </head>
+      <body>
+       {% for animal in user.animal_set.all%}
+        <tr>
+          <td>
+            {{animal.student}}
+          </td>
+          <td>
+            {{animal.animal}}
+          </td>
+          <td>
+            <a class="btn btn-sm btn-primary" href="{% url 'animal' animal.pk %}">
+              edit
+            </a>
+          </td>
+          <td>
+            <a class="btn btn-sm btn-danger" href="{% url 'delete_animal' animal.pk %}">
+              delete
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </body>
+    </table>
+    <h2> New Animal: </h2>
+    <form id="add-part-form" action="" method="POST">
+      {% csrf_token %}
 
-<body>
-  <div class="container">
-    <div class="row row-flex flex-md-center">
-      <div class="col-md-auto">
-        <h1 id="title">
-          Welcome {{user}}!
-        </h1>
-        <h2>
-          Your animals:
-        </h2>
-        <table class="table">
-          <head>
-            <tr>
-              <th>
-                Student Name
-              </th>
-              <th>
-                Animal
-              </th>
-              <th>  </th>
-              <th>  </th>
-            </tr>
-          </head>
-          <body>
-           {% for animal in user.animal_set.all%}
-            <tr>
-              <td>
-                {{animal.student}}
-              </td>
-              <td>
-                {{animal.animal}}
-              </td>
-              <td>
-                <a class="btn btn-sm btn-primary" href="{% url 'animal' animal.pk %}">
-                  edit
-                </a>
-              </td>
-              <td>
-                <a class="btn btn-sm btn-danger" href="{% url 'delete_animal' animal.pk %}">
-                  delete
-                </a>
-              </td>
-            </tr>
-            {% endfor %}
-          </body>
-        </table>
-        <h2> New Animal: </h2>
-        <form id="add-part-form" action="" method="POST">
-          {% csrf_token %}
+      {% for field in newAnimalForm %}
+        <div class="form-group">
+          {{field.error}}
+          {{field.label_tag}}
+          {{field|add_attributes:"form-control"}}
+        </div>
+      {%endfor%}
 
-          {% for field in newAnimalForm %}
-            <div class="form-group">
-              {{field.error}}
-              {{field.label_tag}}
-              {{field|add_attributes:"form-control"}}
-            </div>
-          {%endfor%}
-
-          <input class="btn btn-primary" type="submit" value="Go" />
-        </form>
-      </div>
-    </div>
+      <input class="btn btn-primary" type="submit" value="Go" />
+    </form>
   </div>
-</body>
+</div>
+{% endblock %}

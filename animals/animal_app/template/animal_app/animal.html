@@ -1,22 +1,60 @@
 {% extends "base.html" %}
 {% load template_tags %}
 
-{% block add-part-form %}
-<form id="add-part-form" action="" method="POST">
-    {% csrf_token %}
-    {% for field in newPartForm %}
-        <div class="form-group row">
-            {{field.error}}
-            <label for="{{ form.id_for_label }}" class="col-3">
-                {{field.label}}:
-            </label>
-            <div class="col-9">
-                {{field|add_attributes:"form-control"}}
-            </div>
-        </div>
-    {%endfor%}
-    <div class="col-3">
-        <input class="btn btn-primary" type="submit" value="Add Animal" />
+{% block title %}
+  {{animal.student}} - {{animal.animal}}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3" id="sidebar">
+      <div id="student-list">
+        Quick Links
+        <ul>
+          {% for animal in user.animal_set.all %}
+            <li>
+              <a class="btn btn-default btn-sm" href="{% url 'animal' animal.pk %}">{{animal}}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
-</form>
+    <!-- Main content  -->
+    <div class="col-md-9" id="content">
+      <!-- Part table -->
+      <div class="row row-flex flex-md-center">
+        <div class="col-md-auto">
+            {% include "animal_app/part_table.html" %}
+        </div>
+      </div>
+      <!-- add part forms -->
+      <div class="row row-flex flex-md-center">
+        <div class="col-md-auto">
+            <form id="add-part-form" action="" method="POST">
+                {% csrf_token %}
+                {% for field in newPartForm %}
+                    <div class="form-group row">
+                        {{field.error}}
+                        <label for="{{ form.id_for_label }}" class="col-3">
+                            {{field.label}}:
+                        </label>
+                        <div class="col-9">
+                            {{field|add_attributes:"form-control"}}
+                        </div>
+                    </div>
+                {%endfor%}
+                <div class="col-3">
+                    <input class="btn btn-primary" type="submit" value="Add Animal" />
+                </div>
+            </form>
+        </div>
+      </div>
+      {% if edit_part %}
+          {% include "animal_app/edit_part.html" %}
+      {% endif %}
+    </div>
+  </div>
+</div>
 {% endblock %}

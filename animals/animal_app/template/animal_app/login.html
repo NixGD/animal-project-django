@@ -1,3 +1,12 @@
+{% extends "base.html" %}
+{% load template_tags %}
+
+{% block title %}
+  Login
+{% endblock %}
+
+{% block content %}
 <a href="{% url "social:begin" "google-oauth2" %}?next=/animals/user">
   Google login
 </a>
+{% endblock %}

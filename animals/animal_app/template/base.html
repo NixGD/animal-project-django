@@ -10,44 +10,12 @@
 </head>
 
 <body>
-  <div class="container">
-    <div class="row">
-      <!-- Sidebar -->
-      <div class="col-md-3" id="sidebar">
-        <a id="user-link" href="{% url 'user' %}">Return to user page</a>
-        <div id="student-list">
-          Quick Links
-          <ul>
-            {% for animal in user.animal_set.all %}
-              <li>
-                <a class="btn btn-default btn-sm" href="{% url 'animal' animal.pk %}">{{animal}}</a>
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-      <!-- Main content  -->
-      <div class="col-md-9" id="content">
-          <!-- Header -->
-        <div class="row row-flex flex-md-center" id="title">
-            {{animal.student}} - {{animal.animal}}
-        </div>
-        <!-- Part table -->
-        <div class="row row-flex flex-md-center">
-          <div class="col-md-auto">
-              {% include "animal_app/part_table.html" %}
-          </div>
-        </div>
-        <!-- add part forms -->
-        <div class="row row-flex flex-md-center">
-          <div class="col-md-auto">
-            {% block add-part-form %} {%endblock%}
-          </div>
-        </div>
-        {% if edit_part %}
-            {% include "animal_app/edit_part.html" %}
-        {% endif %}
-      </div>
+    <a id="user-link" href="{% url 'user' %}">Home</a>
+    <div class="row row-flex flex-md-center" id="title">
+        {% block title %}  {% endblock %}
     </div>
-  </div>
+    <div id="page-content" class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
 </body>
