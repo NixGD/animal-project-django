@@ -1,0 +1,55 @@
+{% load template_tags %}
+<div class="modal" id="edit-part-modal-{{part.pk}}" data-on-close="{% url 'animal' animal.pk %}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          Edit Shape
+        </h2>
+      </div>
+      <form action="" method="POST">
+        <input type="hidden" name="part_pk" value="{{part.pk}}">
+        <div class="modal-body">
+          <div class="container">
+            {% csrf_token %}
+            {% with partform=partforms|hash:part.pk %}
+                <div class="row form-group">
+                  <div class="col-md-2">
+                    {{partform.name.errors}}
+                    <label>
+                      {{partform.name.label_tag}}
+                    </label>
+                  </div>
+                  <div class="col-md-10">
+                    {{partform.name|add_attributes:"form-control"}}
+                  </div>
+                </div>
+            {% endwith %}
+            {% with formset=formsets|hash:part.pk %}
+                <div id="formset-forms">
+                  {{formset.management_form}}
+                  {% for mform in formset %}
+                    <div class="row form-group">
+                      <div class="col-md-2">
+                        <label>
+                          {{mform.instance.dimension.name|title}}:
+                        </label>
+                      </div>
+                      <div class="col-md-10">
+                        {% for field in mform %}
+                          {{ field|add_attributes:"form-control"}}
+                        {% endfor %}
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+            {% endwith %}
+          </div>
+          <div class="modal-footer">
+            <input type="submit" name="edit_part" value="Submit" class="btn btn-primary"/>
+          </div>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>

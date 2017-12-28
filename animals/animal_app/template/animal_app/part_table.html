@@ -6,21 +6,34 @@
       <th> Surface Area </th>
       <th> Volume </th>
       <th> </th>
+      <th> Correct? </th>
     </tr>
   </thead>
   <tbody>
     {% for part in animal.part_set.all %}
-      <tr {% if part.pk == editing_pk %} class="editing" {% endif %}>
+      <tr {% if part.checked %} class="checked" {% endif %}>
         <td> {{part.name}} </td>
         <td> {{part.shape.name}} </td>
-        <td> {{part.sa}} </td>
-        <td> {{part.vol}} </td>
+        <td> {{part.sa|floatformat}} </td>
+        <td> {{part.vol|floatformat}} </td>
         <td>
-            {% include "animal_app/edit_part.html"%}
-          <a class="btn btn-default btn-sm" href="{% url 'edit_part' animal.pk part.pk %}">edit</a>
+            {% include "animal_app/edit_part_modal.html"%}
+            <div>
+              <button type="button" id="edit-part-modal-button"
+                    class="btn btn-primary btn-xs"
+                    data-cfw="modal" data-cfw-modal-toggle="#edit-part-modal-{{part.pk}}">
+                  Edit
+              </button>
+            </div>
         </td>
         <td>
-            hey
+            <form action="" method=POST class="checked-toggle-form">
+                {% csrf_token %}
+                <input type="hidden" name="part_pk" value="{{part.pk}}">
+                <input type="submit" name="checked_toggle"
+                       value="Toggle" class="btn btn-success btn-xs">
+                </input>
+            </form>
         </td>
       </tr>
     {% endfor %}

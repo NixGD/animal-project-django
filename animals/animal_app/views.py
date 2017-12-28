@@ -22,43 +22,41 @@ def index(request):
 def animal(request, animal_id):
     a = get_object_or_404(Animal, pk=animal_id)
 
-    if request.method == "POST":
-        newPartForm = NewPartForm(request.POST)
-        if newPartForm.is_valid():
-            newpart = newPartForm.save(commit=False)
-            newpart.animal = a
-            newpart.save()
-            return redirect(edit_part, animal_id=animal_id, part_id = newpart.pk)
-
-    else:
-        newPartForm = NewPartForm()
-
-    return render(request, 'animal_app/animal.html',
-        {'user': request.user, 'animal': a, 'newPartForm': newPartForm})
-
-def edit_part(request, animal_id, part_id):
-    a = get_object_or_404(Animal, pk=animal_id)
-    p = get_object_or_404(Part, pk=part_id)
-
-    # TODO: Assert error if p does not belong to a
-
     MeasurementsFormSet = inlineformset_factory(Part, Measurement, \
         fields=('value',), can_delete=False, extra=0)
 
     if request.method == "POST":
-        formset = MeasurementsFormSet(request.POST, request.FILES, instance=p)
-        partform = PartForm(request.POST, instance=p)
-        if formset.is_valid() and partform.is_valid():
-            formset.save()
-            partform.save()
-            return redirect(animal, animal_id=animal_id)
-    else:
-        formset = MeasurementsFormSet(instance=p)
-        partform = PartForm(instance=p)
+        if 'checked_toggle' in request.POST:
+            p = get_object_or_404(Part, pk=request.POST["part_pk"])
+            p.checked = not p.checked
+            p.save()
 
-    return render(request, 'base.html',
-        {'edit_part': True, 'user': request.user, 'animal': a,
-         'editing_pk': p.pk, 'partform': partform, 'formset': formset})
+        if 'edit_part' in request.POST:
+            p = get_object_or_404(Part, pk=request.POST["part_pk"])
+            formset = MeasurementsFormSet(request.POST, request.FILES, instance=p)
+            partform = PartForm(request.POST, instance=p)
+            if formset.is_valid() and partform.is_valid():
+                formset.save()
+                partform.save()
+
+        else:
+            newPartForm = NewPartForm(request.POST)
+            if newPartForm.is_valid():
+                newpart = newPartForm.save(commit=False)
+                newpart.animal = a
+                newpart.save()
+        return redirect(animal, animal_id=animal_id)
+
+    else:
+        newPartForm = NewPartForm()
+        formsets =  {p.pk: MeasurementsFormSet(instance=p) for p in a.part_set.all()}
+        partforms = {p.pk: PartForm(instance=p) for p in a.part_set.all()}
+
+    # logger.info(formsets[16])
+
+    return render(request, 'animal_app/animal.html',
+        {'user': request.user, 'animal': a, 'newPartForm': newPartForm,
+        'partforms': partforms, 'formsets': formsets})
 
 @login_required
 def user_home(request):

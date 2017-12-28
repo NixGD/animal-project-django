@@ -26,3 +26,7 @@ def add_attributes(field, css):
             attrs[t] = v
 
     return field.as_widget(attrs=attrs)
+
+@register.filter
+def hash(h, key):
+    return h.get(key)
