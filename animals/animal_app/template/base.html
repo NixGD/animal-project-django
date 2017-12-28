@@ -10,6 +10,17 @@
       <link rel="stylesheet" type="text/css" href="{% static 'animal_app/style.css' %}" />
     </head>
 
+    <!-- JAVASCRIPT -->
+    <a class="confirm-delete" ...>Delete</a>
+        <script>
+            $(document).on('click', '.btn-confirm',
+                function() {
+                        return confirm('Are you sure you want to delete this?');
+                }
+            );
+        </script>
+
+
     <body>
         <a id="user-link" href="{% url 'user' %}">Home</a>
         <a id="logout-link" href="{% url 'logout' %}">Logout</a>
