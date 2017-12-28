@@ -15,7 +15,7 @@ class RectangularPrism:
                 measures['width']  * measures['height'] * 2
 
     def get_vol(measures):
-        return measures['length'] * measures['height'] * measures['length']
+        return measures['length'] * measures['height'] * measures['width']
 
 class Cylinder:
     dimensions = ["radius", "height"]
