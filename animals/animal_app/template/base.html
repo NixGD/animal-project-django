@@ -1,22 +1,24 @@
 {% load template_tags %}
 {% load static %}
+<!DOCTYPE HTML>
+<html lang="en-US">
+    <head>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/figuration/2.0.0/css/figuration.min.css" integrity="sha384-4NEYqGqlkFmjCXappSYTanA6sCbHfuAbTw0y9/n3iEx6JVK5TzYEVyQWroUSR3vo" crossorigin="anonymous">
 
-<head>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/figuration/2.0.0/css/figuration.min.css" integrity="sha384-4NEYqGqlkFmjCXappSYTanA6sCbHfuAbTw0y9/n3iEx6JVK5TzYEVyQWroUSR3vo" crossorigin="anonymous">
+      <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/figuration/2.0.0/js/figuration.min.js" integrity="sha384-CYqCLcTJYBDbNhvb4Y5FSqooQB6ZZZUBboJ2YkdFnNrf5BLWOy1WsKdaiSpOAZf/" crossorigin="anonymous"></script>
+      <link rel="stylesheet" type="text/css" href="{% static 'animal_app/style.css' %}" />
+    </head>
 
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/figuration/2.0.0/js/figuration.min.js" integrity="sha384-CYqCLcTJYBDbNhvb4Y5FSqooQB6ZZZUBboJ2YkdFnNrf5BLWOy1WsKdaiSpOAZf/" crossorigin="anonymous"></script>
-  <link rel="stylesheet" type="text/css" href="{% static 'animal_app/style.css' %}" />
-</head>
-
-<body>
-    <a id="user-link" href="{% url 'user' %}">Home</a>
-    <a id="logout-link" href="{% url 'logout' %}">Logout</a>
-    <div class="row row-flex flex-md-center" id="title">
-        {% block title %}  {% endblock %}
-    </div>
-    <div id="page-content" class="container">
-        {% block content %}
-        {% endblock %}
-    </div>
-</body>
+    <body>
+        <a id="user-link" href="{% url 'user' %}">Home</a>
+        <a id="logout-link" href="{% url 'logout' %}">Logout</a>
+        <div class="row row-flex flex-md-center" id="title">
+            {% block title %}  {% endblock %}
+        </div>
+        <div id="page-content" class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </body>
+</html>
