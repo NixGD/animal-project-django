@@ -24,7 +24,7 @@ class Cylinder:
     def get_sa(measures):
         logger.info(measures)
         return  2 * dpi * measures['radius']**2 + \
-                2 * dpi * measures['height']
+                2 * dpi * measures['radius'] * measures['height']
 
     def get_vol(measures):
         return dpi * measures['radius']**2 * measures['height']
