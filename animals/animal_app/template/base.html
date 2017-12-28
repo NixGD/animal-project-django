@@ -11,15 +11,12 @@
     </head>
 
     <!-- JAVASCRIPT -->
-    <a class="confirm-delete" ...>Delete</a>
-        <script>
-            $(document).on('click', '.btn-confirm',
-                function() {
-                        return confirm('Are you sure you want to delete this?');
-                }
-            );
-        </script>
-
+    <script>
+        $(document).on('click', '.btn-confirm',
+            function() {
+                return confirm('Are you sure you want to delete this?');
+            });
+    </script>
 
     <body>
         <a id="user-link" href="{% url 'user' %}">Home</a>
