@@ -29,3 +29,11 @@
 #student-list {
   margin-top: 2em;
 }
+
+.checked {
+    background-color: #90EE90;
+}
+
+.checked-toggle-form {
+    margin-bottom:0;
+}
