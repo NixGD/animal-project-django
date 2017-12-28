@@ -19,6 +19,7 @@ def login(request):
 def index(request):
     return HttpResponse("Hello, world. You're at the index.")
 
+@login_required
 def animal(request, animal_id):
     a = get_object_or_404(Animal, pk=animal_id)
 
