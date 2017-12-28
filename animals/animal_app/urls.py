@@ -10,5 +10,6 @@ urlpatterns = [
     #     views.new_part, name='new_part'),
     url(r'^user', views.user_home, name='user'),
     url('', include('social_django.urls', namespace='social')),
-    url(r'^login', views.login, name='')
+    url(r'^login', views.login_view, name='login'),
+    url(r'^logout', views.logout_view, name='logout')
 ]

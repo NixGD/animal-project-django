@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.forms import inlineformset_factory
 from django.template import Library
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 import logging
 
@@ -13,8 +14,12 @@ logger = logging.getLogger("debugging")
 
 register = Library()
 
-def login(request):
+def login_view(request):
     return render(request, 'animal_app/login.html', {})
+
+def logout_view(request):
+    logout(request)
+    return redirect(login_view)
 
 def index(request):
     return HttpResponse("Hello, world. You're at the index.")
@@ -22,6 +27,7 @@ def index(request):
 @login_required
 def animal(request, animal_id):
     a = get_object_or_404(Animal, pk=animal_id)
+    #TODO: Check that the owner is actually correct.
 
     MeasurementsFormSet = inlineformset_factory(Part, Measurement, \
         fields=('value',), can_delete=False, extra=0)
