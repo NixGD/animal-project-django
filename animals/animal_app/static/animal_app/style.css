@@ -45,3 +45,7 @@
 .checked-toggle-form {
     margin-bottom:0;
 }
+
+#btn-google-signin {
+    width: 10em;
+}

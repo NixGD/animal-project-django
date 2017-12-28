@@ -1,12 +1,15 @@
 {% extends "base.html" %}
 {% load template_tags %}
+{% load static %}
 
 {% block title %}
   Login
 {% endblock %}
 
 {% block content %}
+Please sign in to your Google account to access the website. <br/>
+
 <a href="{% url "social:begin" "google-oauth2" %}?next=/animals/user">
-  Google login
+    <img id="btn-google-signin" src="{% static "animal_app/btn_google_signin.png" %}" alt="Sign in with Google"/>
 </a>
 {% endblock %}
