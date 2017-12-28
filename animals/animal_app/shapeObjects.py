@@ -1,6 +1,9 @@
 import logging
 logger = logging.getLogger("debugging")
 from math import pi
+from decimal import Decimal
+
+dpi = Decimal(pi)
 
 class RectangularPrism:
     dimensions = ["length", "width", "height"]
@@ -20,9 +23,8 @@ class Cylinder:
 
     def get_sa(measures):
         logger.info(measures)
-        logger.info(pi*measures['radius'])
-        return  2 * pi * measures['radius']**2 + \
-                2 * pi * measures['height']
+        return  2 * dpi * measures['radius']**2 + \
+                2 * dpi * measures['height']
 
     def get_vol(measures):
-        return pi * measures['radius']**2 * measures['height']
+        return dpi * measures['radius']**2 * measures['height']
