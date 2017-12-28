@@ -13,9 +13,13 @@
       <div id="student-list">
         Quick Links
         <ul>
-          {% for animal in user.animal_set.all %}
+          {% for animal_item in user.animal_set.all %}
             <li>
-              <a class="btn btn-default btn-sm" href="{% url 'animal' animal.pk %}">{{animal}}</a>
+                {% if animal_item.pk == animal.pk %}
+                    <button disabled class="btn btn-primary btn-sm">{{animal_item}}</a>
+                {% else %}
+                    <a class="btn btn-default btn-sm" href="{% url 'animal' animal_item.pk %}">{{animal_item}}</a>
+                {% endif %}
             </li>
           {% endfor %}
         </ul>

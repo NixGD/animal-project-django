@@ -27,7 +27,15 @@
 }
 
 #student-list {
-  margin-top: 2em;
+}
+
+#student-list ul {
+    padding-left: 0;
+}
+
+#student-list li {
+    list-style: none;
+    margin-top: 0.5em;
 }
 
 .checked {
