@@ -37,6 +37,17 @@ class RectangularPrism:
     def get_vol(measures):
         return measures['length'] * measures['height'] * measures['width']
 
+class RectangularPryramid:
+    dimensions = ["length", "width", "height"]
+    readable_name = "Rectangular Pryramid"
+    def get_sa(measures):
+        return  measures['length'] * measures['width'] + \
+                measures['width']  * pythag(measures['height'], measures['length']/2) + \
+                measures['length'] * pythag(measures['height'], measures['width'] /2)
+
+    def get_vol(measures):
+        return measures['length'] * measures['height'] * measures['width'] / 3
+
 class Cylinder:
     dimensions = ["radius", "height"]
     readable_name = "Cylinder"
@@ -100,89 +111,131 @@ class Cone:
     def get_vol(measures):
         return circle_area(measures['radius']) * measures['height'] / 3
 
-	# RectangularPyramid: {
-	# 	name: "Rectangular Pyramid",
-	# 	dimensionNames: [
-	# 	"Width",
-	# 	"Length",
-	# 	"Height"
-	# 	],
-	# 	findVolume: function(w,l,h) {
-	# 		return (h*w*l/3);
-	# 	},
-	# 	findSurfaceArea: function(w,l,h) {
-	# 		return (w*l + w*app.pythag(l/2, h) + l*app.pythag(w/2,h));
-	# 	}
-	# },
-	# TrapezoidalPrismRight: {
-	# 	name: "Trapezoidal Prism (Right)",
-	# 	dimensionNames: [
-	# 	"Short Side",
-	# 	"Long Side",
-	# 	"Trapaziod Width",
-	# 	"Prism Height"
-	# 	],
-	# 	findVolume: function(s,l,w,h) {
-	# 		return ((s+l)/2 * w * h);
-	# 	},
-	# 	findSurfaceArea:function(s,l,w,h) {
-	# 		return( (s+l)*w + h* (l+s+w + app.pythag(w,l-s)) );
-	# 	}
-	# },
-	# TrapezoidalPrismIsosoles: {
-	# 	name: "Trapezoidal Prism (Isosoles)",
-	# 	dimensionNames: [
-	# 	"Short Side",
-	# 	"Long Side",
-	# 	"Trapaziod Width",
-	# 	"Prism Height"
-	# 	],
-	# 	findVolume: function(s,l,w,h) {
-	# 		return ((l+s)/2 * w * h);
-	# 	},
-	# 	findSurfaceArea:function(s,l,w,h) {
-	# 		return ( (l+s)*w + h*(l+s + 2*app.pythag(w,(l-s)/2) ));
-	# 	}
-    #
-	# },
-	# PentagonalPrism: {
-	# 	name: "Pentagonal Prism",
-	# 	info: "A rectangle with one corner cut off.",
-	# 	dimensionNames: [
-	# 	"Width",
-	# 	"Short Width",
-	# 	"Length",
-	# 	"Short Length",
-	# 	"Height"
-	# 	],
-	# 	findVolume: function(w, sw, l, sl, h) {
-	# 		triangleArea = 0.5*(w-sw)*(l-sl);
-	# 		return h* (l*w - triangleArea);
-	# 	},
-	# 	findSurfaceArea: function(w, sw, l, sl, h) {
-	# 		baseArea =  l*w - 0.5*(w-sw)*(l-sl);
-	# 		var perimeter = w+sw+l+sl+app.pythag(w-sw,l-sl);
-	# 		return baseArea*2 + h*perimeter;
-	# 	}
-	# },
-	# HousePentagonalPrism: {
-	# 	name: "House Pentagonal Prism",
-	# 	info: "A rectangle with a triangle on top. House height is measured from apex to base, parallel to side heights.",
-	# 	dimensionNames: [
-	# 	"House Height",
-	# 	"Side Height",
-	# 	"Base Width",
-	# 	"Prism Height"
-	# 	],
-	# 	findVolume: function(hh, sh, b, ph) {
-	# 		return 0.5*b*ph*(hh+sh);
-	# 	},
-	# 	findSurfaceArea: function(hh, sh, b, ph) {
-	# 		var perimeter = b + 2*sh + 2*app.pythag(hh-sh, 0.5*b);
-	# 		baseArea = 0.5*b*(hh+sh);
-	# 		return perimeter*ph + 2*baseArea;
-	# 	}
-	# },
+def right_trapezoidal_perimeter(l, s, w):
+    return l+s+w + pythag(w,l-s)
+
+def isosoles_trapezoidal_perimeter(l, s, w):
+    return l+s + 2*pythag(w,(l-s)/2)
+
+class TrapezoidalPrismRight:
+    readable_name = "Trapezoidal Prism Right"
+
+    dimensions = [
+		"short side",
+		"long Side",
+		"trapezoid width",
+		"prism height"
+	]
+
+    def get_vol(measures):
+        return (measures['short side']+measures['long side']) / 2  * \
+                measures['trapezoid width'] * measures['prism height']
+
+    def get_sa(measures):
+        return prism_sa(
+            p=right_trapezoidal_perimeter(
+                l = measures['long side'],
+                s = measures['short side'],
+                w = measures['trapezoid width']
+            ),
+            h = measures['prism height'],
+            base_a = (measures['short side']+measures['long side']) / 2  * \
+                      measures['trapezoid width']
+        )
+
+class TrapezoidalPrismIsosoles:
+    readable_name = "Trapezoidal Prism Isosoles"
+
+    dimensions = [
+		"short side",
+		"long Side",
+		"trapezoid width",
+		"prism height"
+	]
+
+    def get_vol(measures):
+        return (measures['short side']+measures['long side']) / 2  * \
+                measures['trapezoid width'] * measures['prism height']
+
+    def get_sa(measures):
+        return prism_sa(
+            p=isosoles_trapezoidal_perimeter(
+                l = measures['long side'],
+                s = measures['short side'],
+                w = measures['trapezoid width']
+            ),
+            h = measures['prism height'],
+            base_a = (measures['short side']+measures['long side']) / 2  * \
+                      measures['trapezoid width']
+        )
+
+class PentagonalPrism:
+    readable_name = "Pentagonal Prism (Sq. w/o Corner)"
+
+    dimensions = [
+		"width",
+		"short width",
+		"length",
+		"short length",
+		"prism height"
+	]
+
+    def base_area(measures):
+        triangleArea = (measures["width"]  - measures["short width"]) * \
+                       (measures["length"] - measures["short length"]) / 2
+        return measures['length'] * measures['width'] - triangleArea
+
+    def get_vol(measures):
+        return measures['prism height'] * PentagonalPrism.base_area(measures)
+
+    def get_sa(measures):
+        perimeter = measures['width'] + \
+                    measures['short width'] + \
+                    measures['length'] + \
+                    measures['short length'] + \
+                    pythag(
+                        measures['width']  - measures['short width'],
+                        measures['length'] - measures['short length']
+                    )
+
+        return prism_sa(
+            p = perimeter,
+            h = measures['prism height'],
+            base_a = PentagonalPrism.base_area(measures)
+        )
+
+class HousePentagonalPrism:
+    readable_name = "Pentagonal Prism (House)"
+
+    dimensions = [
+		"full height",
+		"side height",
+		"base width",
+		"prism height"
+	]
+
+    def base_area(measures):
+        return measures["base width"] * \
+                       (measures["full height"] + measures["side height"]) / 2
+
+    def get_vol(measures):
+        return measures['prism height'] * HousePentagonalPrism.base_area(measures)
+
+    def get_sa(measures):
+        perimeter = measures['base width'] + \
+                    2 * measures['side height'] + \
+                    2 * pythag(
+                        measures['full height']  - measures['side height'],
+                        measures['base width'] / 2
+                    )
+
+        return prism_sa(
+            p = perimeter,
+            h = measures['prism height'],
+            base_a = HousePentagonalPrism.base_area(measures)
+        )
+
+
 	# HexagonalPrismRight: {
 	# 	name: "Hexagonal Prism (Right)",
 	# 	info: "A rectangle with two equal corners cut off.",
