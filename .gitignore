@@ -16,3 +16,4 @@ tests/report/
 animals/animal_app/migrations
 *.sqlite3
 *.log
+animals/animals/settings.py
