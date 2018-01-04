@@ -13,7 +13,7 @@ tests/coverage_html/
 tests/.coverage
 build/
 tests/report/
-animals/animal_app/migrations
 *.sqlite3
 *.log
+.idea
 animals/animals/settings.py
