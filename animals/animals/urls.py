@@ -17,7 +17,6 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^animals/', include('animal_app.urls')),
+    url('', include('animal_app.urls')),
     url(r'^admin/', admin.site.urls),
-    url('', include('social_django.urls', namespace='social'))
 ]

@@ -50,8 +50,8 @@ TEMPLATES = [
 ]
 
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
-SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/animals/user'
-LOGIN_URL = '/animals/login'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/user'
+LOGIN_URL = '/login'
 
 WSGI_APPLICATION = 'animals.wsgi.application'
 
