@@ -31,7 +31,7 @@ ROOT_URLCONF = 'animals.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["animal_app/template"],
+        'DIRS': ["animals/animal_app/template"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
