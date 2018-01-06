@@ -6,7 +6,16 @@ class Command(BaseCommand):
     help = "initializes any added shapes"
 
     def handle(self, *args, **options):
-        shapes = ["RectangularPrism", "Cylinder"]
+        shapes = ["RectangularPrism",
+                  "RectangularPyramid",
+                  "Cylinder",
+                  "TriangularPrismIsosceles",
+                  "TriangularPrismRight",
+                  "Cone",
+                  "TrapezoidalPrismRight",
+                  "TrapezoidalPrismIsosceles",
+                  "PentagonalPrism",
+                  "HousePentagonalPrism"]
 
         added_shape = False
         for s in shapes:

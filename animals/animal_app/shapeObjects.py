@@ -3,6 +3,10 @@ logger = logging.getLogger("debugging")
 from math import pi
 from decimal import Decimal
 
+# Note: all shapes defined in this file must be added to
+# animal_app/management/commands/create_shapes.py
+# in order to be added to the database.
+
 dpi = Decimal(pi)
 
 def pythag(a, b):
@@ -14,7 +18,7 @@ def circle_area(r):
 def circle_perimiter(r):
     return 2 * dpi * r
 
-def isosoles_perimiter(h, b):
+def isosceles_perimiter(h, b):
     side_len = pythag(b / 2, h)
     return 2 * side_len + b
 
@@ -37,9 +41,9 @@ class RectangularPrism:
     def get_vol(measures):
         return measures['length'] * measures['height'] * measures['width']
 
-class RectangularPryramid:
+class RectangularPyramid:
     dimensions = ["length", "width", "height"]
-    readable_name = "Rectangular Pryramid"
+    readable_name = "Rectangular Pyramid"
     def get_sa(measures):
         return  measures['length'] * measures['width'] + \
                 measures['width']  * pythag(measures['height'], measures['length']/2) + \
@@ -59,13 +63,13 @@ class Cylinder:
     def get_vol(measures):
         return dpi * measures['radius']**2 * measures['height']
 
-class TriangularPrismIsosoles:
+class TriangularPrismIsosceles:
     dimensions = ["triangle base", "triangle height", "prism height"]
-    readable_name = "Triangular Prism (Isosoles)"
+    readable_name = "Triangular Prism (Isosceles)"
 
     def get_sa(measures):
         return prism_sa(
-            p = isosoles_perimiter(
+            p = isosceles_perimiter(
                 b = measures['triangle base'],
                 h = measures['triangle height']
             ),
@@ -114,7 +118,7 @@ class Cone:
 def right_trapezoidal_perimeter(l, s, w):
     return l+s+w + pythag(w,l-s)
 
-def isosoles_trapezoidal_perimeter(l, s, w):
+def isosceles_trapezoidal_perimeter(l, s, w):
     return l+s + 2*pythag(w,(l-s)/2)
 
 class TrapezoidalPrismRight:
@@ -143,8 +147,8 @@ class TrapezoidalPrismRight:
                       measures['trapezoid width']
         )
 
-class TrapezoidalPrismIsosoles:
-    readable_name = "Trapezoidal Prism Isosoles"
+class TrapezoidalPrismIsosceles:
+    readable_name = "Trapezoidal Prism Isosceles"
 
     dimensions = [
 		"short side",
@@ -159,7 +163,7 @@ class TrapezoidalPrismIsosoles:
 
     def get_sa(measures):
         return prism_sa(
-            p=isosoles_trapezoidal_perimeter(
+            p=isosceles_trapezoidal_perimeter(
                 l = measures['long side'],
                 s = measures['short side'],
                 w = measures['trapezoid width']

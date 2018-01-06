@@ -1,9 +1,9 @@
 from django.test import TestCase
 from .shapeObjects import \
-    RectangularPrism, RectangularPryramid, \
+    RectangularPrism, RectangularPyramid, \
     Cylinder, Cone, \
-    TriangularPrismIsosoles, TriangularPrismRight, \
-    TrapezoidalPrismRight, TrapezoidalPrismIsosoles, \
+    TriangularPrismIsosceles, TriangularPrismRight, \
+    TrapezoidalPrismRight, TrapezoidalPrismIsosceles, \
     PentagonalPrism, HousePentagonalPrism
 
 from math import pi, sqrt
@@ -62,7 +62,7 @@ class ShapeCalculationTests(TestCase):
         )
 
     def testRectangularPry(self):
-        self.sa_and_vol(RectangularPryramid,
+        self.sa_and_vol(RectangularPyramid,
             vol=l*w*h/3,
             sa= l*w + l*pythag(h,w/2) + w*pythag(h, l/2)
         )
@@ -74,7 +74,7 @@ class ShapeCalculationTests(TestCase):
             )
 
     def testTriPrismIsoc(self):
-        self.sa_and_vol(TriangularPrismIsosoles,
+        self.sa_and_vol(TriangularPrismIsosceles,
             vol = 0.5 * tri_base * tri_h * h,
             sa  = h*(pythag(tri_h, tri_base/2)*2 + tri_base) + 2 * 0.5 * tri_h * tri_base
 		)
@@ -98,7 +98,7 @@ class ShapeCalculationTests(TestCase):
         )
 
     def testTrapPrismIsos(self):
-        self.sa_and_vol(TrapezoidalPrismIsosoles,
+        self.sa_and_vol(TrapezoidalPrismIsosceles,
             vol = ((ss+ls)/2 * w * h),
             sa  = (ls+ss)*w + h*(ls+ss + 2*pythag(w,(ls-ss)/2) )
         )

@@ -1,5 +1,5 @@
-<table id="animal-summary-table" class="table">
-  <thead class="thead-default">
+<table id="animal-summary-table" class="table table-bordered">
+  <thead class="">
     <tr>
       <th> Part </th>
       <th> Shape </th>
@@ -21,7 +21,7 @@
             <div>
               <button type="button" id="edit-part-modal-button"
                     class="btn btn-primary btn-xs"
-                    data-cfw="modal" data-cfw-modal-toggle="#edit-part-modal-{{part.pk}}">
+                    data-cfw="modal" data-cfw-modal-target="#edit-part-modal-{{part.pk}}">
                   Edit
               </button>
             </div>
@@ -29,10 +29,9 @@
         <td>
             <form action="" method=POST class="checked-toggle-form">
                 {% csrf_token %}
-                <input type="hidden" name="part_pk" value="{{part.pk}}">
+                <input type="hidden" name="part_pk" value="{{part.pk}}" />
                 <input type="submit" name="checked_toggle"
-                       value="Toggle" class="btn btn-success btn-xs">
-                </input>
+                       value="Toggle" class="btn btn-success btn-xs" />
             </form>
         </td>
       </tr>

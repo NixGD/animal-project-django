@@ -1,30 +1,44 @@
-
-#animal-summary-table {
-  border-collapse: collapse;
-  margin: 1.5em
+body {
+    background-size: 1cm 1cm;
+    background-image: linear-gradient(to right, #DDDDDD 1px, transparent 1px), linear-gradient(to bottom, #DDDDDD 1px, transparent 1px);
 }
 
-#animal-summary-table td{
-  border: 0.05em black solid;
-  padding: 0.4em;
+h1 {
+    font-family: 'Black Ops One', fantasy;
 }
 
-#animal-summary-table .editing{
-  font-weight: bold;
+h2, h3, legend {
+    /*font-family: 'Barrio', fantasy;*/
+    font-family: 'Black Ops One', fantasy;
 }
 
-#add-part-form {
-  margin: 1.5em;
+table.table {
+    background-color: #FFFFFF;
+    border-collapse: collapse;
 }
 
-#title {
-  font-size: 3.5em;
-  margin: 0.5em;
+fieldset {
+    border: 1px solid black;
 }
 
-#sidebar {
-  padding: 2em;
+/* Header */
+
+nav {
+    background: #FFFFFF;
 }
+
+.bg-grass {
+    background-image: url("grass.png");
+    font-family: 'Black Ops One', fantasy;
+}
+
+/* Login page */
+
+#btn-google-signin {
+    width: 10em;
+}
+
+/* User page */
 
 #student-list {
 }
@@ -38,6 +52,31 @@
     margin-top: 0.5em;
 }
 
+/* Animal page */
+
+#title {
+    font-size: 3.5em;
+    margin: 0.5em;
+}
+
+#animal-summary-table {
+}
+
+#animal-summary-table td{
+    border: 0.05em black solid;
+    padding: 0.4em;
+}
+
+#animal-summary-table .editing{
+    font-weight: bold;
+}
+
+#add-part-form {
+}
+
+#sidebar {
+}
+
 .checked {
     background-color: #90EE90;
 }
@@ -46,6 +85,3 @@
     margin-bottom:0;
 }
 
-#btn-google-signin {
-    width: 10em;
-}

@@ -3,8 +3,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 
-from .shapeObjects import RectangularPrism, Cylinder
-
+from .shapeObjects import *
 import logging
 
 logger = logging.getLogger("debugging")

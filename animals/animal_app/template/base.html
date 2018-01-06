@@ -1,14 +1,15 @@
+<!DOCTYPE HTML>
 {% load template_tags %}
 {% load static %}
-<!DOCTYPE HTML>
 <html lang="en-US">
-    <head>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/figuration/2.0.0/css/figuration.min.css" integrity="sha384-4NEYqGqlkFmjCXappSYTanA6sCbHfuAbTw0y9/n3iEx6JVK5TzYEVyQWroUSR3vo" crossorigin="anonymous">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/figuration@3.0.4/dist/css/figuration.min.css" integrity="sha384-6qzKb2zKQ+FBiiRnnwGlNMnxwcQlcLXERH9gHDRZiThT8+A4tfAKSKqALCkbwH4p" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Black+Ops+One|Barrio" rel="stylesheet">
 
-      <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha384-3ceskX3iaEnIogmQchP8opvBy3Mi7Ce34nWjpBIwVTHfGYWQS9jwHDVRnpKKHJg7" crossorigin="anonymous"></script>
-      <script src="https://cdn.jsdelivr.net/figuration/2.0.0/js/figuration.min.js" integrity="sha384-CYqCLcTJYBDbNhvb4Y5FSqooQB6ZZZUBboJ2YkdFnNrf5BLWOy1WsKdaiSpOAZf/" crossorigin="anonymous"></script>
-      <link rel="stylesheet" type="text/css" href="{% static 'animal_app/style.css' %}" />
-    </head>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/figuration@3.0.4/dist/js/figuration.min.js" integrity="sha384-Du6FqlIqpqhBUy96ich68w7vfXEcbJLIciQWtgT/BsbpNDMdpy1gSkN/UotrjcI0" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'animal_app/style.css' %}" />
+</head>
 
     <!-- JAVASCRIPT -->
     <script>
@@ -19,12 +20,30 @@
     </script>
 
     <body>
-        <a id="user-link" href="{% url 'user' %}">Home</a>
-        <a id="logout-link" href="{% url 'logout' %}">Logout</a>
-        <div class="row row-flex flex-md-center" id="title">
-            {% block title %}  {% endblock %}
-        </div>
-        <div id="page-content" class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-grass">
+            <button class="navbar-toggle collapsed bg-green-100 p-0_25 radius me-1" type="button" data-cfw="collapse" data-cfw-collapse-target="#navbarCollapse">
+                <span aria-hidden="true">&#8801;</span>
+            </button>
+            <span class="navbar-brand bg-green-100 p-0_5 radius">
+                <img src="{% static 'animal_app/rumpeltux-Malayan-Tapir-300px.png' %}" style="height: 1em; display: inline;"/>
+                The Animal Project
+            </span>
+            {% if user.is_authenticated %}
+            <div class="navbar-collapse collapse flex-between" id="navbarCollapse">
+                <ul class="navbar-nav">
+                    <li class="navbar-item bg-green-100 p-0_25 radius">
+                        <a id="user-link" class="nav-link" href="{% url 'user' %}">Home</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="navbar-item bg-green-100 p-0_25 radius">
+                        <a id="logout-link" class="nav-link flex-end" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+            {% endif %}
+        </nav>
+        <div id="page-content" class="">
             {% block content %}
             {% endblock %}
         </div>
