@@ -23,6 +23,13 @@
     <!-- Main content  -->
     <div class="col-md-7" id="content">
         <h1>{{animal}}</h1>
+
+        <form id="notes-form" action="" method="POST">
+            {{notesform.notes|add_attributes:"form-control"}}
+            {% csrf_token %}
+            <input class="btn" type="submit" name="update_notes" value="Update Notes" />
+        </form>
+
         {% include "animal_app/part_table.html" %}
     </div>
 

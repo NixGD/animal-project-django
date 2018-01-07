@@ -23,3 +23,9 @@ class AnimalForm(forms.ModelForm):
     class Meta:
         model = Animal
         fields = ['student', 'animal']
+
+class AnimalNotesForm(forms.ModelForm):
+
+    class Meta:
+        model = Animal
+        fields = ['notes']

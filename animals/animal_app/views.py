@@ -8,7 +8,7 @@ from django.core.exceptions import PermissionDenied
 
 import logging
 
-from .forms import PartForm, ShapeSelectForm, NewPartForm, AnimalForm
+from .forms import *
 from .models import Animal, Part, Measurement, Shape
 
 logger = logging.getLogger("debugging")
@@ -36,6 +36,11 @@ def animal(request, animal_id):
         fields=('value',), can_delete=False, extra=0)
 
     if request.method == "POST":
+        if 'update_notes' in request.POST:
+            notesform = AnimalNotesForm(request.POST, instance=a)
+            if notesform.is_valid():
+                notesform.save()
+
         if 'checked_toggle' in request.POST:
             p = get_object_or_404(Part, pk=request.POST["part_pk"])
             p.checked = not p.checked
@@ -61,12 +66,13 @@ def animal(request, animal_id):
         newPartForm = NewPartForm()
         formsets =  {p.pk: MeasurementsFormSet(instance=p) for p in a.part_set.all()}
         partforms = {p.pk: PartForm(instance=p) for p in a.part_set.all()}
+        notesform = AnimalNotesForm(instance=a)
 
     # logger.info(formsets[16])
 
     return render(request, 'animal_app/animal.html',
         {'user': request.user, 'animal': a, 'newPartForm': newPartForm,
-        'partforms': partforms, 'formsets': formsets})
+        'partforms': partforms, 'formsets': formsets, 'notesform': notesform})
 
 @login_required
 def user_home(request):

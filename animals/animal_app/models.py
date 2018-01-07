@@ -15,6 +15,7 @@ class Animal(models.Model):
     student = models.CharField(max_length = 50)
     animal = models.CharField(max_length = 50)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    notes = models.TextField(blank=True, default="")
 
     def unchecked_count(self):
         return self.part_set.filter(checked=True).count()
