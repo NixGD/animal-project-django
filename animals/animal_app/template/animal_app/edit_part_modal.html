@@ -24,6 +24,17 @@
                     {{partform.name|add_attributes:"form-control"}}
                   </div>
                 </div>
+                <div class="row form-group">
+                  <div class="col-md-2">
+                    {{partform.quantity.errors}}
+                    <label>
+                      {{partform.quantity.label_tag}}
+                    </label>
+                  </div>
+                  <div class="col-md-10">
+                    {{partform.quantity|add_attributes:"form-control"}}
+                  </div>
+                </div>
             {% endwith %}
             {% with formset=formsets|hash:part.pk %}
                 <div id="formset-forms">
