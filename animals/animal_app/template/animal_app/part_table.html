@@ -37,5 +37,16 @@
             </td>
         </tr>
         {% endfor %}
+        <!-- Total -->
+        <tr class="total">
+            <td>
+                Total:
+            </td>
+            <td> </td>
+            <td> </td>
+            <td> {{animal.total_sa|floatformat}} </td>
+            <td> {{animal.total_vol|floatformat}} </td>
+            <td> </td>
+        </tr>
     </tbody>
 </table>

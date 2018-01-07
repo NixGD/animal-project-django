@@ -17,11 +17,20 @@ class Animal(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     notes = models.TextField(blank=True, default="")
 
+    @property
     def unchecked_count(self):
         return self.part_set.filter(checked=True).count()
 
     def __str__(self):
         return "{} ({})".format(self.animal, self.student)
+
+    @property
+    def total_vol(self):
+        return sum([p.vol*p.quantity for p in self.part_set.all()])
+
+    @property
+    def total_sa(self):
+        return sum([p.sa*p.quantity for p in self.part_set.all()])
 
 class ShapeManager(models.Manager):
 
