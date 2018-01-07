@@ -25,15 +25,12 @@
             {% for animal in user.animal_set.all%}
             <tr>
                 <td>
-                    {{animal.student}}
+                    <a class="edit-link" href="{% url 'animal' animal.pk %}">
+                        {{animal.student}}
+                    </a>
                 </td>
                 <td>
                     {{animal.animal}}
-                </td>
-                <td>
-                    <a class="btn btn-sm btn-primary" href="{% url 'animal' animal.pk %}">
-                        edit
-                    </a>
                 </td>
                 <td>
                     <a class="btn btn-sm btn-danger btn-confirm" href="{% url 'delete_animal' animal.pk %}">
