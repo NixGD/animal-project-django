@@ -4,6 +4,7 @@ from django.forms import inlineformset_factory
 from django.template import Library
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.core.exceptions import PermissionDenied
 
 import logging
 
@@ -27,7 +28,9 @@ def index(request):
 @login_required
 def animal(request, animal_id):
     a = get_object_or_404(Animal, pk=animal_id)
-    #TODO: Check that the owner is actually correct.
+    # Check that the owner is actually correct.
+    if not a.user == request.user:
+        raise PermissionDenied
 
     MeasurementsFormSet = inlineformset_factory(Part, Measurement, \
         fields=('value',), can_delete=False, extra=0)
