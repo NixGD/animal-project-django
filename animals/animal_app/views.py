@@ -46,6 +46,11 @@ def animal(request, animal_id):
             p.checked = not p.checked
             p.save()
 
+        if 'initially_correct_toggle' in request.POST:
+            p = get_object_or_404(Part, pk=request.POST["part_pk"])
+            p.initiallycorrect = not p.initiallycorrect
+            p.save()
+
         if 'edit_part' in request.POST:
             p = get_object_or_404(Part, pk=request.POST["part_pk"])
             formset = MeasurementsFormSet(request.POST, request.FILES, instance=p)
@@ -67,8 +72,6 @@ def animal(request, animal_id):
         formsets =  {p.pk: MeasurementsFormSet(instance=p) for p in a.part_set.all()}
         partforms = {p.pk: PartForm(instance=p) for p in a.part_set.all()}
         notesform = AnimalNotesForm(instance=a)
-
-    # logger.info(formsets[16])
 
     return render(request, 'animal_app/animal.html',
         {'user': request.user, 'animal': a, 'newPartForm': newPartForm,

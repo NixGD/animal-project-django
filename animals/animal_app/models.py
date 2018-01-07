@@ -54,6 +54,7 @@ class Part(models.Model):
     animal = models.ForeignKey(Animal, on_delete=models.CASCADE)
     shape = models.ForeignKey(Shape, on_delete=models.PROTECT)
     checked = models.BooleanField(default=False)
+    initiallycorrect = models.BooleanField(default=False)
     quantity = models.IntegerField(default=1)
 
     def get_measurment_dict(self):
