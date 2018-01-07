@@ -17,12 +17,14 @@
                     <th>
                         Animal
                     </th>
-                    <th>  </th>
+                    <th>
+                        Parts Correct
+                    </th>
                     <th>  </th>
                 </tr>
             </thead>
             <tbody>
-            {% for animal in user.animal_set.all%}
+            {% for animal in user.animal_set.all %}
             <tr>
                 <td>
                     <a class="edit-link" href="{% url 'animal' animal.pk %}">
@@ -31,6 +33,10 @@
                 </td>
                 <td>
                     {{animal.animal}}
+                </td>
+                <td>
+                      {{animal.unchecked_count}}
+                    / {{animal.part_set.count}}
                 </td>
                 <td>
                     <a class="btn btn-sm btn-danger btn-confirm" href="{% url 'delete_animal' animal.pk %}">
