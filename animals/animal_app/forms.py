@@ -5,7 +5,7 @@ class PartForm(forms.ModelForm):
 
     class Meta:
         model = Part
-        fields = ['name']
+        fields = ['name', 'quantity']
 
 class NewPartForm(forms.ModelForm):
 
