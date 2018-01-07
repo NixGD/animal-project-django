@@ -126,7 +126,7 @@ class TrapezoidalPrismRight:
 
     dimensions = [
 		"short side",
-		"long Side",
+		"long side",
 		"trapezoid width",
 		"prism height"
 	]
@@ -152,7 +152,7 @@ class TrapezoidalPrismIsosceles:
 
     dimensions = [
 		"short side",
-		"long Side",
+		"long side",
 		"trapezoid width",
 		"prism height"
 	]
