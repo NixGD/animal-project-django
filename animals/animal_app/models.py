@@ -32,6 +32,7 @@ class Animal(models.Model):
     def total_sa(self):
         return sum([p.sa*p.quantity for p in self.part_set.all()])
 
+
 class ShapeManager(models.Manager):
 
     def createShape(self, name):
@@ -70,6 +71,9 @@ class Part(models.Model):
 
     def __str__(self):
         return "{} ({})".format(self.name, self.animal.student)
+
+    class Meta:
+        ordering = ['pk']
 
 
 class Dimension(models.Model):
