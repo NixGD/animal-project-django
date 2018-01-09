@@ -302,7 +302,7 @@ class RegularPrism:
                RegularPrism.apothem(measures) / 2
 
     def get_vol(measures):
-        return RegularPrism.base_area(measures) * measures["pyramid height"]
+        return RegularPrism.base_area(measures) * measures["prism height"]
 
     def get_sa(measures):
         return prism_sa(
