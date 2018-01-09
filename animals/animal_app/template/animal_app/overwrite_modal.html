@@ -1,0 +1,38 @@
+{% load template_tags %}
+<div class="modal" id="overwrite-part-modal-{{part.pk}}" data-on-close="{% url 'animal' animal.pk %}">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          Overwrite Values
+        </h2>
+      </div>
+      <form action="" method="POST">
+        <input type="hidden" name="part_pk" value="{{part.pk}}">
+        <div class="modal-body">
+          <div class="container">
+            {% csrf_token %}
+            {% with overwrite_form=overwrite_forms|hash:part.pk %}
+              {% for field in overwrite_form %}
+                <div class="row form-group">
+                  <div class="col-md-2">
+                    {{field.errors}}
+                    <label>
+                      {{field.label_tag}}
+                    </label>
+                  </div>
+                  <div class="col-md-10">
+                    {{field|add_attributes:"form-control"}}
+                  </div>
+                </div>
+              {% endfor %}
+            {% endwith %}
+          </div>
+          <div class="modal-footer">
+            <input type="submit" name="overwrite_part" value="Submit" class="btn btn-primary"/>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

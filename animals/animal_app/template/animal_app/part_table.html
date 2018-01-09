@@ -29,6 +29,15 @@
             <td> {{part.quantity}} </td>
             <td> {{part.sa|floatformat}} </td>
             <td> {{part.vol|floatformat}} </td>
+            {% include "animal_app/overwrite_modal.html"%}
+            <td>
+                <a id="edit-part-modal-button"
+                    class="edit-link link-primary"
+                    href=""
+                    data-cfw="modal" data-cfw-modal-target="#overwrite-part-modal-{{part.pk}}">
+                    Overwrite
+                </a>
+            </td>
             <td>
                 <form action="" method=POST class="checked-toggle-form">
                     {% csrf_token %}

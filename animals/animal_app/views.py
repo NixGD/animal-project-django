@@ -59,6 +59,12 @@ def animal(request, animal_id):
                 formset.save()
                 partform.save()
 
+        if 'overwrite_part' in request.POST:
+            p = get_object_or_404(Part, pk=request.POST["part_pk"])
+            overwriteform = OverwriteForm(request.POST, instance=p)
+            if overwriteform.is_valid():
+                overwriteform.save()
+
         else:
             newPartForm = NewPartForm(request.POST)
             if newPartForm.is_valid():
@@ -71,11 +77,14 @@ def animal(request, animal_id):
         newPartForm = NewPartForm()
         formsets =  {p.pk: MeasurementsFormSet(instance=p) for p in a.part_set.all()}
         partforms = {p.pk: PartForm(instance=p) for p in a.part_set.all()}
+        overwrite_forms = {p.pk: OverwriteForm(instance=p) for p in a.part_set.all()}
+
         notesform = AnimalNotesForm(instance=a)
 
     return render(request, 'animal_app/animal.html',
         {'user': request.user, 'animal': a, 'newPartForm': newPartForm,
-        'partforms': partforms, 'formsets': formsets, 'notesform': notesform})
+        'partforms': partforms, 'formsets': formsets, 'notesform': notesform,
+        'overwrite_forms': overwrite_forms})
 
 
 @login_required

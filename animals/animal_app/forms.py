@@ -7,6 +7,12 @@ class PartForm(forms.ModelForm):
         model = Part
         fields = ['name', 'quantity']
 
+class OverwriteForm(forms.ModelForm):
+
+    class Meta:
+        model = Part
+        fields = ['overwritten_sa', 'overwritten_vol']
+
 class NewPartForm(forms.ModelForm):
 
     class Meta:
