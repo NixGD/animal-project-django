@@ -1,10 +1,11 @@
 from django.test import TestCase
 from .shapeObjects import \
     RectangularPrism, RectangularPyramid, \
-    Cylinder, Cone, \
+    Cylinder, Cone, HalfCylinder, \
     TriangularPrismIsosceles, TriangularPrismRight, \
     TrapezoidalPrismRight, TrapezoidalPrismIsosceles, \
-    PentagonalPrism, HousePentagonalPrism
+    PentagonalPrism, HousePentagonalPrism, \
+    RegularPrism, RegularPyramid
 
 from math import pi, sqrt
 from decimal import Decimal
@@ -21,6 +22,8 @@ sw = 3
 sl = 4
 fh = 21
 sh = 19
+n = 4
+s = 7
 
 measures = {
     "length": l,
@@ -40,7 +43,10 @@ measures = {
     "full height": fh,
     "short height": sh,
     "side height": sh,
-    "base width": w
+    "base width": w,
+    "number of sides": n,
+    "side length": s,
+    "pyramid height": h
 }
 
 decimal_measures = {key: Decimal(value) for key, value in measures.items()}
@@ -119,6 +125,26 @@ class ShapeCalculationTests(TestCase):
         self.sa_and_vol(HousePentagonalPrism,
             vol = h * base,
             sa  = base*2 + h * p
+        )
+
+    def testRegularPrism(self):
+        assert n == 4
+        self.sa_and_vol(RegularPrism,
+            vol = s**2 * h,
+            sa  = 2*s**2 + 4*s*h
+        )
+
+    def testRegularPyr(self):
+        assert n == 4
+        self.sa_and_vol(RegularPyramid,
+            vol = s**2 * h / 3,
+            sa  = s**2 + pythag(s/2,h)*s*2
+        )
+
+    def testHalfCyl(self):
+        self.sa_and_vol(HalfCylinder,
+            vol = pi*r**2 * h / 2,
+            sa  = (pi*r + 2*r)*h + pi*r**2
         )
         	# HousePentagonalPrism: {
         	# 	name: "House Pentagonal Prism",

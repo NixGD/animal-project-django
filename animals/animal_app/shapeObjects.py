@@ -1,6 +1,6 @@
 import logging
 logger = logging.getLogger("debugging")
-from math import pi
+from math import pi, tan
 from decimal import Decimal
 
 # Note: all shapes defined in this file must be added to
@@ -62,6 +62,18 @@ class Cylinder:
 
     def get_vol(measures):
         return dpi * measures['radius']**2 * measures['height']
+
+class HalfCylinder:
+    dimensions = ["radius", "height"]
+    readable_name = "Half Cylinder"
+
+    def get_sa(measures):
+        return  dpi * measures['radius']**2 + \
+                dpi * measures['radius'] * measures['height'] + \
+                2 * measures['radius'] * measures['height']
+
+    def get_vol(measures):
+        return dpi * measures['radius']**2 * measures['height'] / 2
 
 class TriangularPrismIsosceles:
     dimensions = ["triangle base", "triangle height", "prism height"]
@@ -238,6 +250,62 @@ class HousePentagonalPrism:
             h = measures['prism height'],
             base_a = HousePentagonalPrism.base_area(measures)
         )
+
+class RegularPyramid:
+    readable_name = "Regular Pyramid"
+
+    dimensions = [
+        "number of sides",
+        "side length",
+        "pyramid height"
+    ]
+
+
+    def apothem(measures):
+        return measures['side length'] / Decimal(2 *
+                tan(pi / int(measures['number of sides'])))
+
+    def base_area(measures):
+        return measures['number of sides'] * measures['side length'] * \
+               RegularPyramid.apothem(measures) / 2
+
+    def get_vol(measures):
+        return RegularPyramid.base_area(measures) * measures["pyramid height"] / 3
+
+    def get_sa(measures):
+        apex_to_midpoint = pythag(RegularPyramid.apothem(measures), measures['pyramid height'])
+        side_area = apex_to_midpoint * measures['side length'] / 2
+        return RegularPyramid.base_area(measures) + side_area * measures['number of sides']
+
+class RegularPrism:
+    readable_name = "Regular Prism"
+
+    dimensions = [
+        "number of sides",
+        "side length",
+        "prism height"
+    ]
+
+
+    def apothem(measures):
+        return measures['side length'] / Decimal(2 *
+                tan(pi / int(measures['number of sides'])))
+
+    def base_area(measures):
+        return measures['number of sides'] * measures['side length'] * \
+               RegularPrism.apothem(measures) / 2
+
+    def get_vol(measures):
+        return RegularPrism.base_area(measures) * measures["pyramid height"]
+
+    def get_sa(measures):
+        return prism_sa(
+            p = measures['side length'] * measures['number of sides'],
+            h = measures['prism height'],
+            base_a = RegularPrism.base_area(measures)
+        )
+
+
 
 
 	# HexagonalPrismRight: {

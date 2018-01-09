@@ -9,13 +9,16 @@ class Command(BaseCommand):
         shapes = ["RectangularPrism",
                   "RectangularPyramid",
                   "Cylinder",
+                  "HalfCylinder",
                   "TriangularPrismIsosceles",
                   "TriangularPrismRight",
                   "Cone",
                   "TrapezoidalPrismRight",
                   "TrapezoidalPrismIsosceles",
                   "PentagonalPrism",
-                  "HousePentagonalPrism"]
+                  "HousePentagonalPrism",
+                  "RegularPrism",
+                  "RegularPyramid"]
 
         added_shape = False
         for s in shapes:
