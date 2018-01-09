@@ -262,8 +262,11 @@ class RegularPyramid:
 
 
     def apothem(measures):
-        return measures['side length'] / Decimal(2 *
-                tan(pi / int(measures['number of sides'])))
+        if (measures['number of sides'] > 0):
+            return measures['side length'] / Decimal(2 *
+                    tan(pi / int(measures['number of sides'])))
+        else:
+            return 0
 
     def base_area(measures):
         return measures['number of sides'] * measures['side length'] * \
@@ -288,15 +291,18 @@ class RegularPrism:
 
 
     def apothem(measures):
-        return measures['side length'] / Decimal(2 *
-                tan(pi / int(measures['number of sides'])))
+        if (measures['number of sides'] > 0):
+            return measures['side length'] / Decimal(2 *
+                    tan(pi / int(measures['number of sides'])))
+        else:
+            return 0
 
     def base_area(measures):
         return measures['number of sides'] * measures['side length'] * \
                RegularPrism.apothem(measures) / 2
 
     def get_vol(measures):
-        return RegularPrism.base_area(measures) * measures["pyramid height"]
+        return RegularPrism.base_area(measures) * measures["prism height"]
 
     def get_sa(measures):
         return prism_sa(
