@@ -77,6 +77,16 @@ def animal(request, animal_id):
         {'user': request.user, 'animal': a, 'newPartForm': newPartForm,
         'partforms': partforms, 'formsets': formsets, 'notesform': notesform})
 
+
+@login_required
+def delete_part(request, part_id):
+    p = get_object_or_404(Part, pk=part_id)
+    if request.user == p.animal.user:
+        p.delete()
+
+    return redirect(animal, animal_id=p.animal.pk)
+
+
 @login_required
 def user_home(request):
     if request.method == "POST":
