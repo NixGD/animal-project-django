@@ -57,17 +57,27 @@ class Part(models.Model):
     checked = models.BooleanField(default=False)
     initiallycorrect = models.BooleanField(default=False)
     quantity = models.IntegerField(default=1)
+    overwritten_sa  = models.DecimalField(decimal_places = 1, max_digits=8, blank=True, null=True)
+    overwritten_vol = models.DecimalField(decimal_places = 1, max_digits=8, blank=True, null=True)
 
     def get_measurment_dict(self):
         return {m.dimension.name: m.value for m in self.measurments.all()}
 
     @property
-    def sa(self):
+    def calculated_sa(self):
         return eval(self.shape.class_name).get_sa(self.get_measurment_dict())
 
     @property
-    def vol(self):
+    def calculated_vol(self):
         return eval(self.shape.class_name).get_vol(self.get_measurment_dict())
+
+    @property
+    def sa(self):
+        return self.calculated_sa if self.overwritten_sa is None else self.overwritten_sa
+
+    @property
+    def vol(self):
+        return self.calculated_vol if self.overwritten_vol is None else self.overwritten_vol
 
     def __str__(self):
         return "{} ({})".format(self.name, self.animal.student)
