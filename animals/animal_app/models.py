@@ -10,7 +10,6 @@ logger = logging.getLogger("debugging")
 
 logger.debug("test")
 
-
 class Animal(models.Model):
     student = models.CharField(max_length = 50)
     animal = models.CharField(max_length = 50)
@@ -57,8 +56,8 @@ class Part(models.Model):
     checked = models.BooleanField(default=False)
     initiallycorrect = models.BooleanField(default=False)
     quantity = models.IntegerField(default=1)
-    overwritten_sa  = models.DecimalField(decimal_places = 1, max_digits=8, blank=True, null=True)
-    overwritten_vol = models.DecimalField(decimal_places = 1, max_digits=8, blank=True, null=True)
+    overwritten_sa  = models.DecimalField(decimal_places = 2, max_digits=8, blank=True, null=True)
+    overwritten_vol = models.DecimalField(decimal_places = 2, max_digits=8, blank=True, null=True)
 
     def get_measurment_dict(self):
         return {m.dimension.name: m.value for m in self.measurments.all()}
@@ -108,7 +107,7 @@ class Measurement(models.Model):
     dimension = models.ForeignKey(Dimension, on_delete=models.CASCADE)
     part = models.ForeignKey(Part,
         on_delete=models.CASCADE, related_name = 'measurments')
-    value = models.DecimalField(decimal_places = 1, max_digits = 8)
+    value = models.DecimalField(decimal_places = 2, max_digits = 8)
     measurements = MeasurementManager()
 
     def __str__(self):
