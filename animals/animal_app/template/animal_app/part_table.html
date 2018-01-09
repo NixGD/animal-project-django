@@ -8,7 +8,7 @@
             <th> Volume </th>
             <th> Checked? </th>
             <th> Initially Correct? </th>
-
+            <th> </th>
         </tr>
     </thead>
     <tbody>
@@ -47,6 +47,11 @@
                         {% else %} btn-danger {% endif %}" />
                 </form>
             </td>
+            <td>
+                <a class="btn btn-sm btn-danger btn-confirm" href="{% url 'delete_part' part.pk %}">
+                    Delete
+                </a>
+            </td>
         </tr>
         {% endfor %}
         <!-- Total -->
@@ -58,6 +63,7 @@
             <td> </td>
             <td> {{animal.total_sa|floatformat}} </td>
             <td> {{animal.total_vol|floatformat}} </td>
+            <td> </td>
             <td> </td>
             <td> </td>
         </tr>
