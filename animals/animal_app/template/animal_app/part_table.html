@@ -1,3 +1,6 @@
+{% load template_tags %}
+
+
 <table id="animal-summary-table" class="table table-bordered">
     <thead class="">
         <tr>
@@ -7,8 +10,7 @@
             <th> Surface Area </th>
             <th> Volume </th>
             <th></th>
-            <th> Checked? </th>
-            <th> Initially Correct? </th>
+            <th> Current State: </th>
             <th> </th>
         </tr>
     </thead>
@@ -40,21 +42,13 @@
                 </a>
             </td>
             <td>
-                <form action="" method=POST class="checked-toggle-form">
+                <form action="" method=POST class="state-form">
                     {% csrf_token %}
+                    <input type="hidden" name="state-form" />
                     <input type="hidden" name="part_pk" value="{{part.pk}}" />
-                    <input type="submit" name="checked_toggle"
-                    value="Toggle" class="btn btn-success btn-xs" />
-                </form>
-            </td>
-            <td>
-                <form action="" method=POST class="initiallycorrect-toggle-form">
-                    {% csrf_token %}
-                    <input type="hidden" name="part_pk" value="{{part.pk}}" />
-                    <input type="submit" name="initially_correct_toggle"
-                    value="Toggle" class="btn btn-xs
-                        {% if part.initiallycorrect %} btn-success
-                        {% else %} btn-danger {% endif %}" />
+                    {% with stateform=stateforms|hash:part.pk %}
+                        {{stateform.state|add_attributes:"form-control"}}
+                    {% endwith %}
                 </form>
             </td>
             <td>
@@ -73,7 +67,6 @@
             <td> </td>
             <td> {{animal.total_sa|floatformat}} </td>
             <td> {{animal.total_vol|floatformat}} </td>
-            <td> </td>
             <td> </td>
             <td> </td>
             <td> </td>

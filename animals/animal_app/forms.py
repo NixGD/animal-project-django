@@ -35,3 +35,9 @@ class AnimalNotesForm(forms.ModelForm):
     class Meta:
         model = Animal
         fields = ['notes']
+
+class StateSelectForm(forms.ModelForm):
+
+    class Meta:
+        model = Part
+        fields = ['state']

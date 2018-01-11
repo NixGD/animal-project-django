@@ -18,7 +18,7 @@ class Animal(models.Model):
 
     @property
     def unchecked_count(self):
-        return self.part_set.filter(checked=True).count()
+        return self.part_set.filter(state__gt=0).count()
 
     def __str__(self):
         return "{} ({})".format(self.animal, self.student)
@@ -48,13 +48,16 @@ class Shape(models.Model):
     def __str__(self):
         return self.name
 
-
 class Part(models.Model):
     name = models.CharField(max_length = 50)
     animal = models.ForeignKey(Animal, on_delete=models.CASCADE)
     shape = models.ForeignKey(Shape, on_delete=models.PROTECT)
-    checked = models.BooleanField(default=False)
-    initiallycorrect = models.BooleanField(default=False)
+    STATE_CHOICES = [
+        (0, "Incorrect"),
+        (1, "Correct"),
+        (2, "Initially Correct")
+    ]
+    state = models.SmallIntegerField(choices=STATE_CHOICES, default=0)
     quantity = models.IntegerField(default=1)
     overwritten_sa  = models.DecimalField(decimal_places = 2, max_digits=8, blank=True, null=True)
     overwritten_vol = models.DecimalField(decimal_places = 2, max_digits=8, blank=True, null=True)

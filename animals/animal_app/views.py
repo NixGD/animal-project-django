@@ -41,10 +41,11 @@ def animal(request, animal_id):
             if notesform.is_valid():
                 notesform.save()
 
-        if 'checked_toggle' in request.POST:
+        if 'state_form' in request.POST:
             p = get_object_or_404(Part, pk=request.POST["part_pk"])
-            p.checked = not p.checked
-            p.save()
+            stateform = StateSelectForm(request.POST, instance=p)
+            if stateform.is_valid():
+                stateform.save()
 
         if 'initially_correct_toggle' in request.POST:
             p = get_object_or_404(Part, pk=request.POST["part_pk"])
@@ -78,14 +79,13 @@ def animal(request, animal_id):
         formsets =  {p.pk: MeasurementsFormSet(instance=p) for p in a.part_set.all()}
         partforms = {p.pk: PartForm(instance=p) for p in a.part_set.all()}
         overwrite_forms = {p.pk: OverwriteForm(instance=p) for p in a.part_set.all()}
-
+        stateforms = {p.pk: StateSelectForm(instance=p) for p in a.part_set.all()}
         notesform = AnimalNotesForm(instance=a)
 
     return render(request, 'animal_app/animal.html',
         {'user': request.user, 'animal': a, 'newPartForm': newPartForm,
         'partforms': partforms, 'formsets': formsets, 'notesform': notesform,
-        'overwrite_forms': overwrite_forms})
-
+        'overwrite_forms': overwrite_forms, 'stateforms': stateforms})
 
 @login_required
 def delete_part(request, part_id):
