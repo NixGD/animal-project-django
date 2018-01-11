@@ -23,13 +23,6 @@
     <!-- Main content  -->
     <div class="col-md-7" id="content">
         <h1>{{animal}}</h1>
-
-        <form id="notes-form" action="" method="POST">
-            {{notesform.notes|add_attributes:"form-control"}}
-            {% csrf_token %}
-            <input class="btn" type="submit" name="update_notes" value="Update Notes" />
-        </form>
-
         {% include "animal_app/part_table.html" %}
     </div>
 
@@ -50,11 +43,15 @@
                     </div>
                 </div>
                 {%endfor%}
-                <div class="form-group row">
-                    <div class="col-9 offset-3">
-                        <input class="btn btn-primary" type="submit" value="Add Part" />
-                    </div>
-                </div>
+                <input class="btn btn-primary" type="submit" value="Add Part" />
+            </fieldset>
+        </form>
+        <form id="notes-form" action="" method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group bg-green-100 p-1" style="border: 1px solid black">
+                <legend>Notes</legend>
+                {{notesform.notes|add_attributes:"form-control"}}
+                <input id="notes_submit" class="btn btn-primary mt-1" disabled type="submit" name="update_notes" value="Update Notes" />
             </fieldset>
         </form>
     </div>
