@@ -44,10 +44,10 @@
             <td>
                 <form action="" method=POST class="state-form">
                     {% csrf_token %}
-                    <input type="hidden" name="state-form" />
+                    <input type="hidden" name="state_form" />
                     <input type="hidden" name="part_pk" value="{{part.pk}}" />
                     {% with stateform=stateforms|hash:part.pk %}
-                        {{stateform.state|add_attributes:"form-control"}}
+                        {{stateform.state|add_attributes:"form-control state-selector"}}
                     {% endwith %}
                 </form>
             </td>
