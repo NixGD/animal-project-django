@@ -17,7 +17,7 @@ class Animal(models.Model):
     notes = models.TextField(blank=True, default="")
 
     @property
-    def unchecked_count(self):
+    def correct_count(self):
         return self.part_set.filter(state__gt=0).count()
 
     def __str__(self):

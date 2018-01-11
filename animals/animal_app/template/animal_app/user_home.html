@@ -35,8 +35,10 @@
                     {{animal.animal}}
                 </td>
                 <td>
-                      {{animal.unchecked_count}}
+                      {{animal.correct_count}}
                     / {{animal.part_set.count}}
+
+                    {{ animal | completeness_icon }}
                 </td>
                 <td>
                     <a class="btn btn-sm btn-danger btn-confirm" href="{% url 'delete_animal' animal.pk %}">
