@@ -16,7 +16,7 @@
     </thead>
     <tbody>
         {% for part in animal.part_set.all %}
-        <tr {% if part.checked %} class="checked" {% endif %}>
+        <tr {% if part.state %} class="checked" {% endif %}>
             <td>
                 {% include "animal_app/edit_part_modal.html"%}
                 <div>
