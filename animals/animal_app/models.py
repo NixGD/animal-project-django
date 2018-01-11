@@ -54,7 +54,7 @@ class Part(models.Model):
     shape = models.ForeignKey(Shape, on_delete=models.PROTECT)
     STATE_CHOICES = [
         (0, "Incorrect"),
-        (1, "Correct"),
+        (1, "Corrected"),
         (2, "Initially Correct")
     ]
     state = models.SmallIntegerField(choices=STATE_CHOICES, default=0)
