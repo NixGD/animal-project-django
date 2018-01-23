@@ -5,11 +5,12 @@ from django.template import Library
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.core.exceptions import PermissionDenied
+from guardian.shortcuts import assign_perm
 
 import logging
 
 from .forms import *
-from .models import Animal, Part, Measurement, Shape
+from .models import Animal, Part, Measurement, Shape, Collection
 
 logger = logging.getLogger("debugging")
 
@@ -29,8 +30,10 @@ def index(request):
 def animal(request, animal_id):
     a = get_object_or_404(Animal, pk=animal_id)
     # Check that the owner is actually correct.
-    if not a.user == request.user:
+    # TODO: change below check to ensure view premission, and add edit perm checks for processing POST data.
+    if not request.user.has_perm('edit_animals', a.collection):
         raise PermissionDenied
+
 
     MeasurementsFormSet = inlineformset_factory(Part, Measurement, \
         fields=('value',), can_delete=False, extra=0)
@@ -90,7 +93,8 @@ def animal(request, animal_id):
 @login_required
 def delete_part(request, part_id):
     p = get_object_or_404(Part, pk=part_id)
-    if request.user == p.animal.user:
+
+    if request.user.has_perm('edit_animals', p.animal.collection):
         p.delete()
 
     return redirect(animal, animal_id=p.animal.pk)
@@ -98,6 +102,10 @@ def delete_part(request, part_id):
 
 @login_required
 def user_home(request):
+    default_collection = Collection.objects.filter(name='default').first()
+    if not request.user.has_perm('edit_animals', default_collection):
+        assign_perm('edit_animals', request.user, default_collection)
+
     if request.method == "POST":
         newAnimalForm = AnimalForm(request.POST)
         if newAnimalForm.is_valid():
@@ -114,7 +122,7 @@ def user_home(request):
 @login_required
 def delete_animal(request, animal_id):
     a = get_object_or_404(Animal, pk=animal_id)
-    if request.user == a.user:
+    if request.user.has_perm('edit_animals', a.collection):
         a.delete()
 
     return redirect(user_home)

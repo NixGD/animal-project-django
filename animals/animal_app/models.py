@@ -10,11 +10,26 @@ logger = logging.getLogger("debugging")
 
 logger.debug("test")
 
+class Collection(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        permissions = (
+            ('edit_animals', 'Edit animals'),
+            ('view_animals', 'View animals')
+        )
+
+
 class Animal(models.Model):
     student = models.CharField(max_length = 50)
     animal = models.CharField(max_length = 50)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     notes = models.TextField(blank=True, default="")
+    default_collection_pk = Collection.objects.filter(name='default').first().pk
+    collection = models.ForeignKey(Collection, default=default_collection_pk, on_delete=models.PROTECT)
 
     @property
     def correct_count(self):
