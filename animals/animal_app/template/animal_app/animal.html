@@ -7,7 +7,7 @@
     <div class="col-md-2" id="sidebar">
         <div id="student-list" class="bg-green-100 radius p-1">
             <ul>
-                {% for animal_item in user.animal_set.all %}
+                {% for animal_item in animal.collection.animal_set.all %}
                 <li>
                     {% if animal_item.pk == animal.pk %}
                     <span class="btn btn-primary btn-sm">
