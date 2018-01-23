@@ -13,7 +13,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'animal_app',
     'social_django',
-
+    'guardian'
 ]
 
 MIDDLEWARE = [
@@ -91,4 +91,5 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.open_id.OpenIdAuth',
     'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
 )
