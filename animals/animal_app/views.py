@@ -102,7 +102,7 @@ def delete_part(request, part_id):
 
 @login_required
 def user_home(request):
-    default_collection = Collection.objects.filter(name='default').first()
+    default_collection = Collection.default()
     if not request.user.has_perm('edit_animals', default_collection):
         assign_perm('edit_animals', request.user, default_collection)
 
@@ -117,7 +117,7 @@ def user_home(request):
         newAnimalForm = AnimalForm()
 
     return render(request, 'animal_app/user_home.html',
-        {'user': request.user, 'newAnimalForm': newAnimalForm})
+        {'user': request.user, 'newAnimalForm': newAnimalForm, 'collection': default_collection})
 
 @login_required
 def delete_animal(request, animal_id):

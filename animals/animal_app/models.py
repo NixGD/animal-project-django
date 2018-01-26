@@ -10,8 +10,13 @@ logger = logging.getLogger("debugging")
 
 logger.debug("test")
 
+
 class Collection(models.Model):
     name = models.CharField(max_length=50)
+
+    @staticmethod
+    def default():
+        return Collection.objects.filter(name='default').first()
 
     def __str__(self):
         return self.name
@@ -28,8 +33,7 @@ class Animal(models.Model):
     animal = models.CharField(max_length = 50)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     notes = models.TextField(blank=True, default="")
-    default_collection_pk = Collection.objects.filter(name='default').first().pk
-    collection = models.ForeignKey(Collection, default=default_collection_pk, on_delete=models.PROTECT)
+    collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
 
     @property
     def correct_count(self):

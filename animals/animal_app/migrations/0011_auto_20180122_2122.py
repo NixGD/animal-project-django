@@ -17,9 +17,14 @@ class Migration(migrations.Migration):
             name='collection',
             options={'permissions': (('edit_animals', 'Edit animals'), ('view_animals', 'View animals'))},
         ),
+        migrations.AddField(
+            model_name='animal',
+            name='collection',
+            field=models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.SET_NULL, to='animal_app.Collection'),
+        ),
         migrations.AlterField(
             model_name='animal',
             name='collection',
-            field=models.ForeignKey(default=3, on_delete=django.db.models.deletion.PROTECT, to='animal_app.Collection'),
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to='animal_app.Collection'),
         ),
     ]

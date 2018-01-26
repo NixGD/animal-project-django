@@ -24,7 +24,7 @@
                 </tr>
             </thead>
             <tbody>
-            {% for animal in user.animal_set.all %}
+            {% for animal in collection.animal_set.all %}
             <tr>
                 <td>
                     <a class="edit-link" href="{% url 'animal' animal.pk %}">
@@ -35,10 +35,9 @@
                     {{animal.animal}}
                 </td>
                 <td>
+                      {{ animal | completeness_icon }}
                       {{animal.correct_count}}
                     / {{animal.part_set.count}}
-
-                    {{ animal | completeness_icon }}
                 </td>
                 <td>
                     <a class="btn btn-sm btn-danger btn-confirm" href="{% url 'delete_animal' animal.pk %}">

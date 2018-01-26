@@ -3,7 +3,12 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
-import django.db.models.deletion
+
+
+def create_default_collection(apps, schema_editor):
+    Collection = apps.get_model("animal_app", "Collection")
+    default = Collection(id=1,name="default")
+    default.save()
 
 
 class Migration(migrations.Migration):
@@ -28,9 +33,5 @@ class Migration(migrations.Migration):
             name='state',
             field=models.SmallIntegerField(choices=[(0, 'Incorrect'), (1, 'Corrected'), (2, 'Initially Correct')], default=0),
         ),
-        migrations.AddField(
-            model_name='animal',
-            name='collection',
-            field=models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.SET_NULL, to='animal_app.Collection'),
-        ),
+        migrations.RunPython(create_default_collection),
     ]
