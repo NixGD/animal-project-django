@@ -1,38 +1,49 @@
 {% load template_tags %}
 <div class="modal" id="overwrite-part-modal-{{part.pk}}" data-on-close="{% url 'animal' animal.pk %}">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title">
-          Overwrite Values
-        </h2>
-      </div>
-      <form action="" method="POST">
-        <input type="hidden" name="part_pk" value="{{part.pk}}">
-        <div class="modal-body">
-          <div class="container">
-            {% csrf_token %}
-            {% with overwrite_form=overwrite_forms|hash:part.pk %}
-              {% for field in overwrite_form %}
-                <div class="row form-group">
-                  <div class="col-md-2">
-                    {{field.errors}}
-                    <label>
-                      {{field.label_tag}}
-                    </label>
-                  </div>
-                  <div class="col-md-10">
-                    {{field|add_attributes:"form-control"}}
-                  </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="" method="POST">
+                <div class="modal-header">
+                    <h2 class="modal-title">
+                        Override Values
+                    </h2>
                 </div>
-              {% endfor %}
-            {% endwith %}
-          </div>
-          <div class="modal-footer">
-            <input type="submit" name="overwrite_part" value="Submit" class="btn btn-primary"/>
-          </div>
+                <div class="modal-body">
+                    <input type="hidden" name="part_pk" value="{{part.pk}}">
+                    <div class="container">
+                        {% csrf_token %}
+                        {% with overwrite_form=overwrite_forms|hash:part.pk %}
+                        {% for field in overwrite_form %}
+                            <h3>{{field.label}}</h3>
+                            <div class="row">
+                                <div class="col-sm-6">Calculated:</div>
+                                <div class="col-sm-6">
+                                    {% if field.label == 'Surface Area' %}
+                                    {{part.calculated_sa|floatformat:2}}
+                                    {% else %}
+                                    {{part.calculated_vol|floatformat:2}}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>Override:</label>
+                                </div>
+                                <div class="col-sm-6">
+                                    {{field.errors}}
+                                    {{field|add_attributes:"form-control"}}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% endwith %}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <p>Leave blank to use calculated value.</p>
+                    <input type="submit" name="overwrite_part" value="Submit" class="btn btn-primary"/>
+                </div>
+            </form>
         </div>
-      </form>
     </div>
-  </div>
+</div>
 </div>

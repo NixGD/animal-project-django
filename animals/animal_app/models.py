@@ -40,7 +40,7 @@ class Animal(models.Model):
         return self.part_set.filter(state__gt=0).count()
 
     def __str__(self):
-        return "{} ({})".format(self.animal, self.student)
+        return "{}: {}".format(self.student, self.animal)
 
     @property
     def total_vol(self):
@@ -59,6 +59,7 @@ class ShapeManager(models.Manager):
         for d in shape_obj.dimensions:
             Dimension.objects.create(name=d, shape=created)
 
+
 class Shape(models.Model):
     class_name = models.CharField(max_length = 50)
     name = models.CharField(max_length = 50)
@@ -66,6 +67,10 @@ class Shape(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['name']
+
 
 class Part(models.Model):
     name = models.CharField(max_length = 50)
@@ -78,8 +83,10 @@ class Part(models.Model):
     ]
     state = models.SmallIntegerField(choices=STATE_CHOICES, default=0)
     quantity = models.IntegerField(default=1)
-    overwritten_sa  = models.DecimalField(decimal_places = 2, max_digits=8, blank=True, null=True)
-    overwritten_vol = models.DecimalField(decimal_places = 2, max_digits=8, blank=True, null=True)
+    overwritten_sa  = models.DecimalField(decimal_places = 2, max_digits=8, blank=True, null=True,
+                                          verbose_name="Surface Area")
+    overwritten_vol = models.DecimalField(decimal_places = 2, max_digits=8, blank=True, null=True,
+                                          verbose_name="Volume")
 
     def get_measurment_dict(self):
         return {m.dimension.name: m.value for m in self.measurments.all()}
@@ -99,6 +106,10 @@ class Part(models.Model):
     @property
     def vol(self):
         return self.calculated_vol if self.overwritten_vol is None else self.overwritten_vol
+
+    @property
+    def has_overwrite(self):
+        return self.overwritten_sa is not None or self.overwritten_vol is not None
 
     def __str__(self):
         return "{} ({})".format(self.name, self.animal.student)
