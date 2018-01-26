@@ -46,15 +46,15 @@ def completeness_icon(animal):
             color = "#0000FF"
         else:
             color = "#00FF00"
-        svg = '''<span class="svg-icon svg-baseline" aria-hidden="true">
-        <svg viewBox="-1 -1 2 2" style="transform: rotate(-0.25turn)">
+        svg = '''<svg viewBox="-1 -1 2 2" style="transform: rotate(-0.25turn)">
+          <title>{}%</title>
+          <circle r="1" cx="0" cy="0" fill="white" stroke="black" stroke-width=".05"/>
           <path d="{}" fill="{}"></path>
-        </svg>
-        </span>'''.format(svg_path_data(percent), color)
-        return mark_safe(svg)
+        </svg>'''.format(round(percent*100), svg_path_data(percent), color)
     else:
-        return ""
-
+        svg = '''<svg></svg>'''
+    html = '''<span class="svg-icon svg-baseline" aria-hidden="true">''' + svg + '''</span>'''
+    return mark_safe(html)
 
 def svg_coordinates_for_percent(percent):
     x = cos(2 * pi * percent)
