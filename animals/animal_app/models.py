@@ -50,6 +50,9 @@ class Animal(models.Model):
     def total_sa(self):
         return sum([p.sa*p.quantity for p in self.part_set.all()])
 
+    class Meta:
+        ordering = ['student', 'animal']
+
 
 class ShapeManager(models.Manager):
 

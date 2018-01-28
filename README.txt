@@ -34,3 +34,4 @@ UPDATE ON LIVE SITE
   python animals/manage.py create_shapes
   python animals/manage.py migrate
   python animals/manage.py collectstatic
+  touch tmp/restart.txt
