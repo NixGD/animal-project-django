@@ -27,13 +27,12 @@ def index(request):
     return HttpResponse("Hello, world. You're at the index.")
 
 @login_required
-def animal(request, animal_id):
+def animal(request, animal_id, part_id=""):
     a = get_object_or_404(Animal, pk=animal_id)
     # Check that the owner is actually correct.
     # TODO: change below check to ensure view premission, and add edit perm checks for processing POST data.
     if not request.user.has_perm('edit_animals', a.collection):
         raise PermissionDenied
-
 
     MeasurementsFormSet = inlineformset_factory(Part, Measurement, \
         fields=('value',), can_delete=False, extra=0)
@@ -75,6 +74,8 @@ def animal(request, animal_id):
                 newpart = newPartForm.save(commit=False)
                 newpart.animal = a
                 newpart.save()
+                return redirect(animal, animal_id=animal_id, part_id=newpart.pk)
+
         return redirect(animal, animal_id=animal_id)
 
     else:
@@ -85,10 +86,13 @@ def animal(request, animal_id):
         stateforms = {p.pk: StateSelectForm(instance=p) for p in a.part_set.all()}
         notesform = AnimalNotesForm(instance=a)
 
+    editPart = get_object_or_404(Part, pk=part_id) if part_id != '' else None
+
     return render(request, 'animal_app/animal.html',
-        {'user': request.user, 'animal': a, 'newPartForm': newPartForm,
-        'partforms': partforms, 'formsets': formsets, 'notesform': notesform,
-        'overwrite_forms': overwrite_forms, 'stateforms': stateforms})
+        {'user': request.user, 'animal': a, 'editPart': editPart,
+         'newPartForm': newPartForm,
+         'partforms': partforms, 'formsets': formsets, 'notesform': notesform,
+         'overwrite_forms': overwrite_forms, 'stateforms': stateforms})
 
 @login_required
 def delete_part(request, part_id):

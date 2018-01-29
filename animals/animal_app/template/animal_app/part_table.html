@@ -21,10 +21,11 @@
                 {% include "animal_app/edit_part_modal.html"%}
                 <div>
                     <a id="edit-part-modal-button"
-                    class="edit-link link-primary"
-                    href=""
-                    data-cfw="modal" data-cfw-modal-target="#edit-part-modal-{{part.pk}}">
-                    {{part.name}}
+                       class="edit-link link-primary"
+                       href=""
+                       {% if part == editPart %} data-cfw-modal-show="true" {% endif %}
+                       data-cfw="modal" data-cfw-modal-target="#edit-part-modal-{{part.pk}}">
+                        {{part.name}}
                     </a>
             </div>
             </td>

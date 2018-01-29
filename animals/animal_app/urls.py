@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     url(r'^$', views.user_home, name='index'),
     url(r'^animal/(?P<animal_id>[0-9]+)/$', views.animal, name='animal'),
+    url(r'^animal/(?P<animal_id>[0-9]+)/(?P<part_id>[0-9]+)/$', views.animal, name='animal'),
     url(r'^animal/(?P<animal_id>[0-9]+)/delete$', views.delete_animal, name='delete_animal'),
     url(r'^part/(?P<part_id>[0-9]+)/delete$', views.delete_part, name='delete_part'),
     # url(r'^animal/(?P<animal_id>[0-9]+)/part/new/(?P<shape_id>[0-9]+)/$', \
