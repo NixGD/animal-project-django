@@ -14,24 +14,24 @@
             {% csrf_token %}
             {% with partform=partforms|hash:part.pk %}
                 <div class="row form-group">
-                  <div class="col-md-2">
+                  <div class="col-md-4">
                     {{partform.name.errors}}
                     <label>
                       {{partform.name.label_tag}}
                     </label>
                   </div>
-                  <div class="col-md-10">
+                  <div class="col-md-8">
                     {{partform.name|add_attributes:"form-control"}}
                   </div>
                 </div>
                 <div class="row form-group">
-                  <div class="col-md-2">
+                  <div class="col-md-4">
                     {{partform.quantity.errors}}
                     <label>
                       {{partform.quantity.label_tag}}
                     </label>
                   </div>
-                  <div class="col-md-10">
+                  <div class="col-md-8">
                     {{partform.quantity|add_attributes:"form-control"}}
                   </div>
                 </div>
@@ -41,12 +41,12 @@
                   {{formset.management_form}}
                   {% for mform in formset %}
                     <div class="row form-group">
-                      <div class="col-md-2">
+                      <div class="col-md-4">
                         <label>
                           {{mform.instance.dimension.name|title}}:
                         </label>
                       </div>
-                      <div class="col-md-10">
+                      <div class="col-md-8">
                         {% for field in mform %}
                           {{ field|add_attributes:"form-control"}}
                         {% endfor %}

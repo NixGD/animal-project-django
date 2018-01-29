@@ -1,11 +1,11 @@
 from django.test import TestCase
-from .shapeObjects import \
-    RectangularPrism, RectangularPyramid, \
-    Cylinder, Cone, HalfCylinder, \
-    TriangularPrismIsosceles, TriangularPrismRight, \
-    TrapezoidalPrismRight, TrapezoidalPrismIsosceles, \
-    PentagonalPrism, HousePentagonalPrism, \
-    RegularPrism, RegularPyramid
+from .shapeObjects import *
+    # RectangularPrism, RectangularPyramid, \
+    # Cylinder, Cone, HalfCylinder, \
+    # TriangularPrismIsosceles, TriangularPrismRight, \
+    # TrapezoidalPrismRight, TrapezoidalPrismIsosceles, \
+    # PentagonalPrism, HousePentagonalPrism, \
+    # RegularPrism, RegularPyramid
 
 from math import pi, sqrt
 from decimal import Decimal
@@ -46,14 +46,22 @@ measures = {
     "base width": w,
     "number of sides": n,
     "side length": s,
-    "pyramid height": h
+    "pyramid height": h,
+    "base area": tri_base,
+    "perimeter": ls,
 }
 
-decimal_measures = {key: Decimal(value) for key, value in measures.items()}
+
+def to_decimals(map):
+    return {key: Decimal(value) for key, value in map.items()}
+
+
+decimal_measures = to_decimals(measures)
 
 
 def pythag(a, b):
     return sqrt(a*a + b*b);
+
 
 class ShapeCalculationTests(TestCase):
 
@@ -146,7 +154,68 @@ class ShapeCalculationTests(TestCase):
             vol = pi*r**2 * h / 2,
             sa  = (pi*r + 2*r)*h + pi*r**2
         )
-        	# HousePentagonalPrism: {
+
+    def testGeneralPrism(self):
+        self.sa_and_vol(GeneralPrism,
+                        vol = tri_base * h,
+                        sa  = tri_base * 2 + ls*h
+                        )
+
+    def testLopRectPrism(self):
+        measures = to_decimals({
+        'length': 7,
+        'width': 4,
+        'prism height': 10,
+        'height': 10,
+        'corner A lengthwise cut': 0,
+        'corner A widthwise cut': 0,
+        'corner B lengthwise cut': 0,
+        'corner B widthwise cut': 0,
+        'corner C lengthwise cut': 0,
+        'corner C widthwise cut': 0,
+        'corner D lengthwise cut': 0,
+        'corner D widthwise cut': 0,
+        })
+        # With no corner cuts, should match regular rectangular prism
+        self.assertAlmostEqual(LopRectPrism.get_sa(measures), RectangularPrism.get_sa(measures))
+        self.assertAlmostEqual(LopRectPrism.get_vol(measures), RectangularPrism.get_vol(measures))
+
+        # With one corner cut, it's a Rt. Pentagonal Prism
+        measures['corner A lengthwise cut'] = Decimal(2)
+        measures['corner A widthwise cut'] = Decimal(2)
+        rpp_measures = measures
+        rpp_measures['short width'] = Decimal(4-2)
+        rpp_measures['short length'] = Decimal(7-2)
+        self.assertAlmostEqual(LopRectPrism.get_sa(measures), PentagonalPrism.get_sa(rpp_measures))
+        self.assertAlmostEqual(LopRectPrism.get_vol(measures), PentagonalPrism.get_vol(rpp_measures))
+
+        # With two corners cut, it's a House.
+        measures['corner B lengthwise cut'] = Decimal(2)
+        measures['corner B widthwise cut'] = Decimal(2)
+        house_measures = to_decimals({
+            'full height': 7,
+            'side height': 7-2,
+            'base width': 4,
+            'prism height': 10,
+        })
+        self.assertAlmostEqual(LopRectPrism.get_sa(measures), HousePentagonalPrism.get_sa(house_measures))
+        self.assertAlmostEqual(LopRectPrism.get_vol(measures), HousePentagonalPrism.get_vol(house_measures))
+
+        # Same for cutting the bottom two corners
+        measures['corner A lengthwise cut'] = Decimal(0)
+        measures['corner A widthwise cut']  = Decimal(0)
+        measures['corner B lengthwise cut'] = Decimal(0)
+        measures['corner B widthwise cut']  = Decimal(0)
+        measures['corner C lengthwise cut'] = Decimal(2)
+        measures['corner C widthwise cut']  = Decimal(2)
+        measures['corner D lengthwise cut'] = Decimal(2)
+        measures['corner D widthwise cut']  = Decimal(2)
+        self.assertAlmostEqual(LopRectPrism.get_sa(measures), HousePentagonalPrism.get_sa(house_measures))
+        self.assertAlmostEqual(LopRectPrism.get_vol(measures), HousePentagonalPrism.get_vol(house_measures))
+
+
+
+# HousePentagonalPrism: {
         	# 	name: "House Pentagonal Prism",
         	# 	info: "A rectangle with a triangle on top. House height is measured from apex to base, parallel to side heights.",
         	# 	dimensionNames: [

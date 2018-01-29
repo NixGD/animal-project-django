@@ -18,7 +18,10 @@ class Command(BaseCommand):
                   "PentagonalPrism",
                   "HousePentagonalPrism",
                   "RegularPrism",
-                  "RegularPyramid"]
+                  "RegularPyramid",
+                  "LopRectPrism",
+                  "GeneralPrism",
+                  "OtherShape"]
 
         added_shape = False
         for s in shapes:

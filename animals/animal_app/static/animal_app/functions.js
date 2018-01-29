@@ -2,9 +2,10 @@
 
 
 $(document).ready(function() {
-    console.log('ready');
+    $('#notes_submit').hide();
     $('#id_notes').on('keyup', function () {
-        $('#notes_submit').prop("disabled", false);
+        //$('#notes_submit').prop("disabled", false);
+        $('#notes_submit').show();
     });
 
     $(document).on('change',
