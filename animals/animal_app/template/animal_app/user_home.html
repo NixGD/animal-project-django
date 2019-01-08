@@ -17,5 +17,30 @@
             </li>
           {% endfor %}
         </ul>
+    </div>
+    <div class="col-md-3 pe-2">
+        <form id="add-collection-form" action="" method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group bg-green-100 p-1">
+                <legend>Add a new collection:</legend>
+                {% for field in newCollectionForm %}
+                <div class="form-group row">
+                    {{field.error}}
+                    <label for="{{ form.id_for_label }}" class="col-3">
+                        {{field.label}}:
+                    </label>
+                    <div class="col-9">
+                        {{field|add_attributes:"form-control"}}
+                    </div>
+                </div>
+                {%endfor%}
+                <div class="form-group row">
+                    <div class="col-9 offset-3">
+                      <input class="btn btn-primary" type="submit" value="Go" />
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
 </div>
 {% endblock %}

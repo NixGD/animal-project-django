@@ -4,8 +4,9 @@ from django.forms import inlineformset_factory
 from django.template import Library
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
-from guardian.shortcuts import assign_perm, get_objects_for_user
+from guardian.shortcuts import assign_perm, get_objects_for_user, get_users_with_perms
 
 import logging
 
@@ -101,8 +102,19 @@ def delete_part(request, part_id):
 @login_required
 def user_home(request):
     collections = get_objects_for_user(request.user, "view_animals", Collection.objects.all())
+
+    if request.method == "POST":
+        newCollectionForm = CollectionForm(request.POST)
+        if newCollectionForm.is_valid():
+            newCollection = newCollectionForm.save()
+            assign_perm("edit_animals", request.user, newCollection)
+            assign_perm("view_animals", request.user, newCollection)
+
+    else:
+        newCollectionForm = CollectionForm()
+
     return render(request, 'animal_app/user_home.html',
-        {'collections': collections})
+        {'collections': collections, 'newCollectionForm': newCollectionForm})
 
 @login_required
 def collection(request, collection_id):
@@ -111,19 +123,32 @@ def collection(request, collection_id):
     if not request.user.has_perm('view_animals', c):
         raise PermissionDenied
 
-    if request.method == "POST":
+    if request.method == "POST" and 'newAnimal' in request.POST:
         newAnimalForm = AnimalForm(request.POST)
         if newAnimalForm.is_valid():
             newAnimal = newAnimalForm.save(commit=False)
             newAnimal.user = request.user
             newAnimal.collection = c
             newAnimal.save()
-
     else:
         newAnimalForm = AnimalForm()
 
+    if request.method == "POST" and 'share' in request.POST:
+        collectionShareForm = CollectionShareForm(request.POST)
+        if collectionShareForm.is_valid():
+            assign_perm("edit_animals", collectionShareForm.cleaned_data["email"], c)
+            assign_perm("view_animals", collectionShareForm.cleaned_data["email"], c)
+
+    else:
+        collectionShareForm = CollectionShareForm()
+
+    editors_dict = get_users_with_perms(c, attach_perms=True)
+    editors = [e for e, perms in editors_dict.items() if "edit_animals" in perms]
+
     return render(request, 'animal_app/collection.html',
-        {'user': request.user, 'newAnimalForm': newAnimalForm,
+        {'user': request.user,
+        'newAnimalForm': newAnimalForm, 'collectionShareForm': collectionShareForm,
+        'collectionEditors': editors,
         'collection': c})
 
 @login_required

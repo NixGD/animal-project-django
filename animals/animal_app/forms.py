@@ -1,5 +1,6 @@
 from django import forms
-from .models import Part, Shape, Animal
+from django.contrib.auth.models import User
+from .models import Part, Shape, Animal, Collection
 
 class PartForm(forms.ModelForm):
 
@@ -41,3 +42,19 @@ class StateSelectForm(forms.ModelForm):
     class Meta:
         model = Part
         fields = ['state']
+
+class CollectionForm(forms.ModelForm):
+
+    class Meta:
+        model = Collection
+        fields = ['name']
+
+class CollectionShareForm(forms.Form):
+    email = forms.EmailField()
+
+    def clean_email(self):
+        users = User.objects.filter(email=self.cleaned_data["email"])
+        if not users.exists():
+            raise forms.ValidationError("No such user")
+
+        return users.first()
