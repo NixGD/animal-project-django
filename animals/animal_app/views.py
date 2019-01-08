@@ -5,7 +5,7 @@ from django.template import Library
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.core.exceptions import PermissionDenied
-from guardian.shortcuts import assign_perm
+from guardian.shortcuts import assign_perm, get_objects_for_user
 
 import logging
 
@@ -33,7 +33,6 @@ def animal(request, animal_id):
     # TODO: change below check to ensure view premission, and add edit perm checks for processing POST data.
     if not request.user.has_perm('edit_animals', a.collection):
         raise PermissionDenied
-
 
     MeasurementsFormSet = inlineformset_factory(Part, Measurement, \
         fields=('value',), can_delete=False, extra=0)
@@ -99,25 +98,33 @@ def delete_part(request, part_id):
 
     return redirect(animal, animal_id=p.animal.pk)
 
-
 @login_required
 def user_home(request):
-    default_collection = Collection.objects.filter(name='default').first()
-    if not request.user.has_perm('edit_animals', default_collection):
-        assign_perm('edit_animals', request.user, default_collection)
+    collections = get_objects_for_user(request.user, "view_animals", Collection.objects.all())
+    return render(request, 'animal_app/user_home.html',
+        {'collections': collections})
+
+@login_required
+def collection(request, collection_id):
+    c = get_object_or_404(Collection, pk=collection_id)
+
+    if not request.user.has_perm('view_animals', c):
+        raise PermissionDenied
 
     if request.method == "POST":
         newAnimalForm = AnimalForm(request.POST)
         if newAnimalForm.is_valid():
             newAnimal = newAnimalForm.save(commit=False)
             newAnimal.user = request.user
+            newAnimal.collection = c
             newAnimal.save()
 
     else:
         newAnimalForm = AnimalForm()
 
-    return render(request, 'animal_app/user_home.html',
-        {'user': request.user, 'newAnimalForm': newAnimalForm})
+    return render(request, 'animal_app/collection.html',
+        {'user': request.user, 'newAnimalForm': newAnimalForm,
+        'collection': c})
 
 @login_required
 def delete_animal(request, animal_id):

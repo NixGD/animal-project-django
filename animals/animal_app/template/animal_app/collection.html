@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load template_tags %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-9 px-2">
+        <h1>{{ collection.name }}</h1>
+        <h2>
+            Animal List:
+        </h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        Student Name
+                    </th>
+                    <th>
+                        Animal
+                    </th>
+                    <th>
+                        Parts Correct
+                    </th>
+                    <th>  </th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for animal in collection.animal_set.all %}
+            <tr>
+                <td>
+                    <a class="edit-link" href="{% url 'animal' animal.pk %}">
+                        {{animal.student}}
+                    </a>
+                </td>
+                <td>
+                    {{animal.animal}}
+                </td>
+                <td>
+                      {{animal.correct_count}}
+                    / {{animal.part_set.count}}
+
+                    {{ animal | completeness_icon }}
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-danger btn-confirm" href="{% url 'delete_animal' animal.pk %}">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-3 pe-2">
+        <form id="add-part-form" action="" method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group bg-green-100 p-1">
+                <legend>Add a new animal:</legend>
+                {% for field in newAnimalForm %}
+                <div class="form-group row">
+                    {{field.error}}
+                    <label for="{{ form.id_for_label }}" class="col-3">
+                        {{field.label}}:
+                    </label>
+                    <div class="col-9">
+                        {{field|add_attributes:"form-control"}}
+                    </div>
+                </div>
+                {%endfor%}
+                <div class="form-group row">
+                    <div class="col-9 offset-3">
+                      <input class="btn btn-primary" type="submit" value="Go" />
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% endblock %}
