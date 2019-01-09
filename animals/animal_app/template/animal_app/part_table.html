@@ -21,10 +21,11 @@
                 {% include "animal_app/edit_part_modal.html"%}
                 <div>
                     <a id="edit-part-modal-button"
-                    class="edit-link link-primary"
-                    href=""
-                    data-cfw="modal" data-cfw-modal-target="#edit-part-modal-{{part.pk}}">
-                    {{part.name}}
+                       class="edit-link link-primary"
+                       href=""
+                       {% if part == editPart %} data-cfw-modal-show="true" {% endif %}
+                       data-cfw="modal" data-cfw-modal-target="#edit-part-modal-{{part.pk}}">
+                        {{part.name}}
                     </a>
             </div>
             </td>
@@ -34,12 +35,14 @@
             <td> {{part.vol|floatformat}} </td>
             {% include "animal_app/overwrite_modal.html"%}
             <td>
-                <a id="edit-part-modal-button"
-                    class="edit-link link-primary"
+                {% with classname=part.has_overwrite|yesno:"btn-primary,btn-default" %}
+                <a id="overwrite-modal-button"
+                    class="btn btn-sm {{classname}}"
                     href=""
                     data-cfw="modal" data-cfw-modal-target="#overwrite-part-modal-{{part.pk}}">
-                    Overwrite
+                    Override
                 </a>
+                {% endwith %}
             </td>
             <td>
                 <form action="" method=POST class="state-form">
@@ -47,7 +50,7 @@
                     <input type="hidden" name="state_form" />
                     <input type="hidden" name="part_pk" value="{{part.pk}}" />
                     {% with stateform=stateforms|hash:part.pk %}
-                        {{stateform.state|add_attributes:"form-control state-selector"}}
+                        {{stateform.state|add_attributes:"form-control form-control-sm state-selector"}}
                     {% endwith %}
                 </form>
             </td>

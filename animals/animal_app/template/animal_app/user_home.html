@@ -8,6 +8,7 @@
         <h2>
             Collections:
         </h2>
+<<<<<<< HEAD
         <ul>
           {% for collection in collections %}
             <li>
@@ -17,6 +18,48 @@
             </li>
           {% endfor %}
         </ul>
+=======
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                        Student Name
+                    </th>
+                    <th>
+                        Animal
+                    </th>
+                    <th>
+                        Parts Correct
+                    </th>
+                    <th>  </th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for animal in collection.animal_set.all %}
+            <tr>
+                <td>
+                    <a class="edit-link" href="{% url 'animal' animal.pk %}">
+                        {{animal.student}}
+                    </a>
+                </td>
+                <td>
+                    {{animal.animal}}
+                </td>
+                <td>
+                      {{ animal | completeness_icon }}
+                      {{animal.correct_count}}
+                    / {{animal.part_set.count}}
+                </td>
+                <td>
+                    <a class="btn btn-sm btn-danger btn-confirm" href="{% url 'delete_animal' animal.pk %}">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+>>>>>>> c88d7e810c06ac115c2409b3b8710381c66a921b
     </div>
     <div class="col-md-3 pe-2">
         <form id="add-collection-form" action="" method="POST">

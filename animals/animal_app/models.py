@@ -10,8 +10,13 @@ logger = logging.getLogger("debugging")
 
 logger.debug("test")
 
+
 class Collection(models.Model):
     name = models.CharField(max_length=50)
+
+    @staticmethod
+    def default():
+        return Collection.objects.filter(name='default').first()
 
     def __str__(self):
         return self.name
@@ -28,15 +33,14 @@ class Animal(models.Model):
     animal = models.CharField(max_length = 50)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     notes = models.TextField(blank=True, default="")
-    default_collection_pk = Collection.objects.filter(name='default').first().pk
-    collection = models.ForeignKey(Collection, default=default_collection_pk, on_delete=models.PROTECT)
+    collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
 
     @property
     def correct_count(self):
         return self.part_set.filter(state__gt=0).count()
 
     def __str__(self):
-        return "{} ({})".format(self.animal, self.student)
+        return "{}: {}".format(self.student, self.animal)
 
     @property
     def total_vol(self):
@@ -45,6 +49,9 @@ class Animal(models.Model):
     @property
     def total_sa(self):
         return sum([p.sa*p.quantity for p in self.part_set.all()])
+
+    class Meta:
+        ordering = ['student', 'animal']
 
 
 class ShapeManager(models.Manager):
@@ -55,6 +62,7 @@ class ShapeManager(models.Manager):
         for d in shape_obj.dimensions:
             Dimension.objects.create(name=d, shape=created)
 
+
 class Shape(models.Model):
     class_name = models.CharField(max_length = 50)
     name = models.CharField(max_length = 50)
@@ -62,6 +70,10 @@ class Shape(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['name']
+
 
 class Part(models.Model):
     name = models.CharField(max_length = 50)
@@ -74,8 +86,10 @@ class Part(models.Model):
     ]
     state = models.SmallIntegerField(choices=STATE_CHOICES, default=0)
     quantity = models.IntegerField(default=1)
-    overwritten_sa  = models.DecimalField(decimal_places = 2, max_digits=8, blank=True, null=True)
-    overwritten_vol = models.DecimalField(decimal_places = 2, max_digits=8, blank=True, null=True)
+    overwritten_sa  = models.DecimalField(decimal_places = 2, max_digits=8, blank=True, null=True,
+                                          verbose_name="Surface Area")
+    overwritten_vol = models.DecimalField(decimal_places = 2, max_digits=8, blank=True, null=True,
+                                          verbose_name="Volume")
 
     def get_measurment_dict(self):
         return {m.dimension.name: m.value for m in self.measurments.all()}
@@ -95,6 +109,10 @@ class Part(models.Model):
     @property
     def vol(self):
         return self.calculated_vol if self.overwritten_vol is None else self.overwritten_vol
+
+    @property
+    def has_overwrite(self):
+        return self.overwritten_sa is not None or self.overwritten_vol is not None
 
     def __str__(self):
         return "{} ({})".format(self.name, self.animal.student)
