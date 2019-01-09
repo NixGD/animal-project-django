@@ -35,10 +35,9 @@
                     {{animal.animal}}
                 </td>
                 <td>
+                      {{ animal | completeness_icon }}
                       {{animal.correct_count}}
                     / {{animal.part_set.count}}
-
-                    {{ animal | completeness_icon }}
                 </td>
                 <td>
                     <a class="btn btn-sm btn-danger btn-confirm" href="{% url 'delete_animal' animal.pk %}">
@@ -71,40 +70,6 @@
                       <input class="btn btn-primary" type="submit" value="Create" name="newAnimal" />
                     </div>
                 </div>
-            </fieldset>
-        </form>
-        <form id="share-collection-form" action="" method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group bg-green-100 p-1">
-                <legend>Share Collection:</legend>
-                {% for field in collectionShareForm %}
-                <div class="form-group row">
-                  {% for error in field.errors %}
-                    <p> {{ error }} </p>
-                  {% endfor %}
-                    <label for="{{ form.id_for_label }}" class="col-3">
-                        {{field.label}}:
-                    </label>
-                    <div class="col-9">
-                        {{field|add_attributes:"form-control"}}
-                    </div>
-                </div>
-                {%endfor%}
-                <div class="form-group row">
-                    <div class="col-9 offset-3">
-                      <input class="btn btn-primary" type="submit" value="Share" name="share" />
-                    </div>
-                </div>
-                <p>
-                  Currently shared with:
-                  <ul>
-                    {% for editor in collectionEditors %}
-                    <li>
-                      {{editor.username}}
-                    </li>
-                    {% endfor %}
-                  </ul>
-                </p>
             </fieldset>
         </form>
     </div>

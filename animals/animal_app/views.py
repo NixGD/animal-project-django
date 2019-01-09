@@ -106,13 +106,7 @@ def delete_part(request, part_id):
 
 @login_required
 def user_home(request):
-<<<<<<< HEAD
     collections = get_objects_for_user(request.user, "view_animals", Collection.objects.all())
-=======
-    collection = Collection.default()
-    if not request.user.has_perm('edit_animals', collection):
-        assign_perm('edit_animals', request.user, collection)
->>>>>>> c88d7e810c06ac115c2409b3b8710381c66a921b
 
     if request.method == "POST":
         newCollectionForm = CollectionForm(request.POST)
@@ -139,9 +133,10 @@ def collection(request, collection_id):
         if newAnimalForm.is_valid():
             newAnimal = newAnimalForm.save(commit=False)
             newAnimal.user = request.user
-<<<<<<< HEAD
             newAnimal.collection = c
             newAnimal.save()
+            return redirect(animal, animal_id=newAnimal.pk)
+
     else:
         newAnimalForm = AnimalForm()
 
@@ -162,16 +157,6 @@ def collection(request, collection_id):
         'newAnimalForm': newAnimalForm, 'collectionShareForm': collectionShareForm,
         'collectionEditors': editors,
         'collection': c})
-=======
-            newAnimal.collection = collection
-            newAnimal.save()
-            return redirect(animal, animal_id=newAnimal.pk)
-    else:
-        newAnimalForm = AnimalForm()
-
-    return render(request, 'animal_app/user_home.html',
-        {'user': request.user, 'newAnimalForm': newAnimalForm, 'collection': collection})
->>>>>>> c88d7e810c06ac115c2409b3b8710381c66a921b
 
 @login_required
 def delete_animal(request, animal_id):
