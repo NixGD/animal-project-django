@@ -5,9 +5,7 @@ PYTHON ENVIRONMENT
   Python 3 is required.
   (may need to replace 'pip' below with 'pip3')
 
-  pip install Django==1.11.9
-  pip install social-auth-app-django
-  pip install django-guardian
+  pip install -r requirements.txt
 
 DATABASE
 Choose one
@@ -21,6 +19,7 @@ Choose one
 
 APP SET UP
 
+  python animals/manage.py migrate
   python animals/manage.py createsuperuser
   python animals/manage.py create_shapes
 
